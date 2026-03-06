@@ -196,7 +196,7 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 ${payload}
             </div>
 
-            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px; background-color: var(--primary-color); border-color: var(--primary-color); color: white; font-weight: 600;">
+            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px;">
                 Copiar PIX Copia e Cola
             </button>
             
@@ -258,8 +258,8 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
 
         setTimeout(() => {
             btn.innerHTML = 'Copiar PIX Copia e Cola';
-            btn.style.backgroundColor = 'var(--primary-color)';
-            btn.style.borderColor = 'var(--primary-color)';
+            btn.style.backgroundColor = 'var(--action-color)';
+            btn.style.borderColor = 'var(--action-color)';
         }, 4000);
     });
 }
