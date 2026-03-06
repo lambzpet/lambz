@@ -196,14 +196,22 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 ${payload}
             </div>
 
-            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px; background-color: var(--primary-color); border-color: var(--primary-color);">
+            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px; background-color: var(--primary-color); border-color: var(--primary-color); color: white; font-weight: 600;">
                 Copiar PIX Copia e Cola
             </button>
             
-            <p style="font-size: 0.85rem; color: #64748b; margin-top: 16px;">
-                <i class="fas fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary-color)"></i>
-                Aguardando confirmação do pagamento... (Atualização Automática)
-            </p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; background: #f0fdf4; padding: 12px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                <div class="spinner-grow" style="width: 1rem; height: 1rem; color: #16a34a; background-color: #16a34a; border-radius: 50%; display: inline-block; animation: spinner-grow 1s linear infinite;"></div>
+                <p style="font-size: 0.9rem; color: #16a34a; font-weight: 500; margin: 0;">
+                    Aguardando a confirmação do seu banco...
+                </p>
+            </div>
+            <style>
+                @keyframes spinner-grow {
+                    0% { transform: scale(0); opacity: 1; }
+                    100% { transform: scale(1); opacity: 0; }
+                }
+            </style>
         </div>
     `;
 
