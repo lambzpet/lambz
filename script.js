@@ -58,6 +58,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function preencherTeste() {
+    document.getElementById('nome').value = "Teste Cliente MP";
+    document.getElementById('cpf').value = "191.191.191-00";
+    document.getElementById('whatsapp').value = "(11) 99999-9999";
+    document.getElementById('email').value = "teste@lambz.com";
+    document.getElementById('rua').value = "Rua Teste MP";
+    document.getElementById('numero').value = "123";
+
+    // Esconder possível mensagem de erro
+    const errorDiv = document.getElementById('checkout-error');
+    if (errorDiv) errorDiv.style.display = 'none';
+
+    // Limpar bordas vermelhas
+    ['nome', 'cpf', 'whatsapp', 'email'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.border = '1px solid var(--border-color)';
+    });
+}
+
 // --- INTEGRAÇÃO MERCADO PAGO (EM CONSTRUÇÃO) ---
 // --- INTEGRAÇÃO MERCADO PAGO ---
 async function generatePix() {
@@ -66,9 +85,30 @@ async function generatePix() {
     const whatsapp = document.getElementById('whatsapp').value;
     const email = document.getElementById('email').value;
 
-    if (!nome || !cpf || !whatsapp || !email) {
-        alert('Por favor, preencha todos os campos pessoais (Nome, CPF, WhatsApp e E-mail) para prosseguir.');
+    const camposIds = ['nome', 'cpf', 'whatsapp', 'email'];
+    let temErro = false;
+
+    // Reseta bordas e verifica quem está vazio
+    camposIds.forEach(id => {
+        const elemento = document.getElementById(id);
+        if (elemento) {
+            if (!elemento.value) {
+                elemento.style.border = '2px solid #ef4444';
+                temErro = true;
+            } else {
+                elemento.style.border = '1px solid var(--border-color)';
+            }
+        }
+    });
+
+    const errorDiv = document.getElementById('checkout-error');
+    if (temErro) {
+        if (errorDiv) errorDiv.style.display = 'block';
+        // Deslizar até o formulário do erro p/ cliente ver
+        document.querySelector('.checkout-box').scrollIntoView({ behavior: 'smooth' });
         return;
+    } else {
+        if (errorDiv) errorDiv.style.display = 'none';
     }
 
     const cartData = typeof getCheckoutData === 'function' ? getCheckoutData() : null;

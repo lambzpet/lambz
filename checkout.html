@@ -139,8 +139,19 @@
                         <span id="checkout-total"></span>
                     </div>
 
+                    <div id="checkout-error"
+                        style="color: #ef4444; font-size: 0.9rem; margin-top: 16px; margin-bottom: 16px; text-align: center; display: none;">
+                        Por favor, preencha todos os campos destacados em vermelho.
+                    </div>
+
+                    <button class="btn"
+                        style="background: #f1f5f9; color: #475569; width: 100%; border: 1px dashed #cbd5e1; margin-top: 16px; padding: 12px; font-size: 0.9rem;"
+                        onclick="preencherTeste()">
+                        ⚡ Auto-Preencher de Teste
+                    </button>
+
                     <button class="btn btn-primary btn-block"
-                        style="margin-top: 32px; padding: 20px; font-size: 1.15rem;" onclick="generatePix()">
+                        style="margin-top: 16px; padding: 20px; font-size: 1.15rem;" onclick="generatePix()">
                         Gerar PIX e Finalizar
                         <svg style="margin-left: 8px;" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2">
