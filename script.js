@@ -179,8 +179,18 @@ function showPixModal(payload, amount, expectedData, email, transactionId) {
         document.body.removeChild(overlay);
     });*/
 
+    let pollingAttempts = 0;
+    const maxAttempts = 225; // 225 vezes * 4 seg = 900 segundos (15 Minutos de limite)
+
     // Iniciar Polling (Verificação) Automática na LiraPay a cada 4 segundos
     const pollingInterval = setInterval(async () => {
+        pollingAttempts++;
+        if (pollingAttempts > maxAttempts) {
+            clearInterval(pollingInterval);
+            console.log('Tempo limite do QR Code atingido. Parando verificações.');
+            return;
+        }
+
         try {
             const res = await fetch(`https://api.lirapaybr.com/v1/transactions/${transactionId}`, {
                 method: 'GET',
