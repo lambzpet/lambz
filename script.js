@@ -96,8 +96,8 @@ async function generatePix() {
                 external_id: externalId,
                 total_amount: totalAmount,
                 payment_method: 'PIX',
-                webhook_url: 'https://webhook.site/lambz-test', // Webhook fictício para teste
-                ip: '127.0.0.1', // IP fictício para teste
+                webhook_url: window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1') ? 'https://webhook.site/lambz-test' : window.location.origin + '/api/webhook',
+                ip: '127.0.0.1',
                 items: [
                     {
                         id: "item_1",
@@ -120,8 +120,8 @@ async function generatePix() {
 
         const result = await response.json();
 
-        if (response.ok && result.pix && result.pix.payload) {
-            showPixModal(result.pix.payload, totalAmount, orderData, email);
+        if (response.ok && result.pix && result.pix.payload && result.id) {
+            showPixModal(result.pix.payload, totalAmount, orderData, email, result.id);
         } else {
             console.error(result);
             alert('Aconteceu um erro ao gerar o PIX. Verifique se os dados estão corretos (CPF sem erros falsos, E-mail formato correto).');
@@ -138,7 +138,7 @@ async function generatePix() {
     }
 }
 
-function showPixModal(payload, amount, expectedData, email) {
+function showPixModal(payload, amount, expectedData, email, transactionId) {
     // 1 - Em vez de popup overlay, vamos substituir o próprio checkout por uma tela de confirmação/espera.
     const checkoutWrapper = document.querySelector('.checkout-wrapper');
     if (!checkoutWrapper) return; // fail-safe
@@ -174,6 +174,34 @@ function showPixModal(payload, amount, expectedData, email) {
 
     // Atualiza Layout de Fundo da Pagina para Clean 
     checkoutWrapper.style.display = 'block';
+
+    /*document.getElementById('closePixBtn').addEventListener('click', () => {
+        document.body.removeChild(overlay);
+    });*/
+
+    // Iniciar Polling (Verificação) Automática na LiraPay a cada 4 segundos
+    const pollingInterval = setInterval(async () => {
+        try {
+            const res = await fetch(`https://api.lirapaybr.com/v1/transactions/${transactionId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'api-secret': 'sk_ab8d315658f947886f35d9b78fa3b64b54fc8d42934eb7b74742eef9a05d05c881cc9794a46bef03a91cf8eacd1cf4d7ffa9994d71f2f569157665d8e8e73504'
+                }
+            });
+
+            const checkData = await res.json();
+            console.log('Verificando status do Pix:', checkData.status);
+
+            // A LiraPay devolve 'AUTHORIZED' quando o dinheiro entra (Pix Pago)
+            if (checkData.status === 'AUTHORIZED') {
+                clearInterval(pollingInterval);
+                showSuccessScreen(amount);
+            }
+        } catch (e) {
+            console.error('Erro no polling:', e);
+        }
+    }, 4000);
 
     document.getElementById('copyPixBtn').addEventListener('click', () => {
         navigator.clipboard.writeText(payload);
