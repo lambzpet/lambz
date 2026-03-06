@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleção Premium - Lambz</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Estilos específicos para a página de produtos */
+        .collection-hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 107, 26, 0.03) 0%, transparent 100%);
+        }
+
+        .collection-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        /* Testemunho Genuíno em destaque (Social Proof) */
+        .featured-review {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin: -20px auto 60px;
+            max-width: 800px;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .featured-review {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .featured-review img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--trust-color);
+        }
+
+        .featured-review-content {
+            flex-grow: 1;
+        }
+
+        .featured-review .stars {
+            color: var(--trust-color);
+            margin-bottom: 8px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .featured-review .stars svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Simples -->
+    <header class="header" id="header">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Lambz" class="logo-img">
+            </a>
+            <nav class="nav-links">
+                <a href="produtos.html" style="color: var(--action-color);">Coleção Premium</a>
+                <a href="sobre.html">Nossa Essência</a>
+                <a href="index.html#contato">Suporte</a>
+            </nav>
+            <div class="cart-btn" onclick="window.location.href='checkout.html'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <section class="collection-hero">
+        <div class="container">
+            <h1>Coleção <span>Premium</span></h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Padrão ouro em
+                conforto. Selecionamos apenas os itens mais extraordinários para o seu pet.</p>
+        </div>
+    </section>
+
+
+    <!-- Products Grid (Todos os 4 Produtos) -->
+    <section class="products" style="padding-top: 20px;">
+        <div class="container">
+            <div class="grid">
+
+                <!-- Product 1 -->
+                <a href="produto.html?id=cama-nuvem" class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">Mais Vendido</div>
+                        <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=400&h=400"
+                            alt="Cama Nuvem Lambz">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg> 5.0 (428 avaliações)
+                        </div>
+                        <h3 class="product-title">Cama Terapêutica Nuvem</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">R$ 149,90</span>
+                            <span class="price-old">R$ 299,90</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+
+                <!-- Product 2 -->
+                <a href="produto.html?id=coleira-conforto" class="product-card">
+                    <div class="product-image">
+                        <div class="product-badge">Novidade</div>
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400&h=400"
+                            alt="Coleira Ergonômica">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg> 4.9 (156 avaliações)
+                        </div>
+                        <h3 class="product-title">Coleira Peitoral Conforto Absoluto</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">R$ 89,90</span>
+                            <span class="price-old">R$ 159,90</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+
+                <!-- Product 3 -->
+                <a href="produto.html?id=bebedouro-zen" class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&q=80&w=400&h=400"
+                            alt="Bebedouro Inteligente">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg> 4.9 (89 avaliações)
+                        </div>
+                        <h3 class="product-title">Bebedouro Fonte Zen Água Corrente</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">R$ 179,90</span>
+                            <span class="price-old">R$ 249,90</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+
+                <!-- Product 4 -->
+                <a href="produto.html?id=escova-pelos" class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1628009559385-484bd7480a40?auto=format&fit=crop&q=80&w=400&h=400"
+                            alt="Kit Escova">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg> 4.8 (210 avaliações)
+                        </div>
+                        <h3 class="product-title">Luva e Escova Removedora de Pelos</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">R$ 49,90</span>
+                            <span class="price-old">R$ 99,90</span>
+                        </div>
+                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Simples -->
+    <footer>
+        <div class="container text-center">
+            <h4 class="footer-title" style="margin-bottom: 16px;">Precisa de Ajuda?</h4>
+            <p style="color: #a1a1aa; margin-bottom: 8px;">Fale diretamente conosco em:</p>
+            <p style="font-weight: bold; color: white; font-size: 1.1rem; margin-bottom: 32px;">lambzsuporte@gmail.com
+            </p>
+            <div class="footer-bottom">
+                &copy; 2026 Lambz - Conforto para quem você ama.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

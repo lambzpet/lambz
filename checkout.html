@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Seguro - Lambz</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="products.js"></script>
+    <script src="script.js" defer></script>
+</head>
+
+<body style="background-color: #f7f5f0;"> <!-- Um off-white mais marcado para o checkout -->
+
+    <!-- Checkout Header Minimalista (Estratégia: Sem distrações para manter o foco na conversão) -->
+    <header
+        style="background: white; padding: 24px 0; border-bottom: 1px solid var(--border-color); text-align: center;">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Lambz" class="logo-img">
+            </a>
+            <div class="trust-item" style="color: var(--text-color);">
+                <svg viewBox="0 0 24 24" style="color: var(--trust-color);">
+                    <path
+                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                </svg>
+                <span style="font-weight: 700;">Finalização Segura</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="checkout-wrapper">
+
+            <!-- Formulário de Dados -->
+            <div>
+                <div class="checkout-box">
+                    <h2 class="checkout-title" style="margin-bottom: 8px;">
+                        <span
+                            style="background: var(--trust-bg); color: var(--trust-color); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1rem;">1</span>
+                        Dados Pessoais
+                    </h2>
+                    <p class="form-text"
+                        style="color: var(--trust-color); font-weight: 600; margin-bottom: 24px; font-size: 0.85rem;">📝
+                        Obrigatório para emissão da nota fiscal e envio seguro.</p>
+
+                    <div class="form-group">
+                        <label class="form-label">Nome e Sobrenome <span>*</span></label>
+                        <input type="text" class="form-control" id="nome" placeholder="Ex: João da Silva" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">CPF <span>*</span></label>
+                            <input type="text" class="form-control" id="cpf" placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WhatsApp <span>*</span></label>
+                            <input type="tel" class="form-control" id="whatsapp" placeholder="(00) 90000-0000" required>
+                            <p class="form-text" style="color: var(--trust-color); font-weight: 600;">Vamos te enviar o
+                                código de rastreio por aqui 🚚</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">E-mail <span>*</span></label>
+                        <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+
+                    <div class="section-divider"></div>
+
+                    <h2 class="checkout-title" style="margin-bottom: 8px;">
+                        <span
+                            style="background: var(--trust-bg); color: var(--trust-color); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1rem;">2</span>
+                        Endereço de Entrega
+                    </h2>
+                    <p class="form-text"
+                        style="color: var(--trust-color); font-weight: 600; margin-bottom: 24px; font-size: 0.85rem;">📦
+                        Falta pouco! Confirme o endereço e seu pedido já será preparado.</p>
+
+                    <div class="form-row" style="grid-template-columns: 0.8fr 1.2fr;">
+                        <div class="form-group">
+                            <label class="form-label">CEP <span>*</span></label>
+                            <input type="text" class="form-control" id="cep" placeholder="00000-000" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado e Cidade <span>*</span></label>
+                            <input type="text" class="form-control" id="cidade-estado" placeholder="SP - São Paulo"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bairro <span>*</span></label>
+                        <input type="text" class="form-control" id="bairro" placeholder="Ex: Centro" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Rua / Avenida <span>*</span></label>
+                            <input type="text" class="form-control" id="rua" placeholder="Ex: Rua das Flores" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Número <span>*</span></label>
+                            <input type="text" class="form-control" id="numero" placeholder="Ex: 123" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Complemento (Opcional)</label>
+                        <input type="text" class="form-control" id="complemento" placeholder="Apto, Bloco, Casa 2...">
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <!-- Resumo e Botão -->
+            <div>
+                <div class="checkout-box order-summary">
+                    <h2 class="checkout-title" style="font-size: 1.25rem; margin-bottom: 24px;">Resumo do Pedido</h2>
+
+                    <div id="checkout-product"
+                        style="display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color);">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span id="checkout-subtotal"></span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Frete</span>
+                        <strong style="color: var(--trust-color);">Grátis</strong>
+                    </div>
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="checkout-total"></span>
+                    </div>
+
+                    <button class="btn btn-primary btn-block"
+                        style="margin-top: 32px; padding: 20px; font-size: 1.15rem;" onclick="generatePix()">
+                        Gerar PIX e Finalizar
+                        <svg style="margin-left: 8px;" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <div class="secure-tag" style="margin-top: 20px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24">
+                            <path fill="currentColor"
+                                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                        </svg>
+                        Ambiente Seguro e Criptografado
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Popula o resumo do pedido com dados do localStorage
+        (function loadCheckout() {
+            const data = getCheckoutData();
+
+            if (!data) {
+                // Fallback: se não tem dados, mostra o primeiro produto
+                const fallback = LAMBZ_PRODUCTS[0];
+                populateSummary({
+                    name: fallback.name,
+                    price: fallback.price,
+                    image: fallback.image,
+                    qty: 1,
+                    color: fallback.colors[0],
+                    size: fallback.sizes ? fallback.sizes[0] : null
+                });
+                return;
+            }
+
+            populateSummary(data);
+        })();
+
+        function populateSummary(data) {
+            const total = data.price * data.qty;
+            const details = [
+                data.color,
+                data.size
+            ].filter(Boolean).join(' · ');
+
+            document.getElementById('checkout-product').innerHTML = `
+                <img src="${data.image}" style="border-radius: var(--radius-sm); width: 80px; height: 80px; object-fit: cover;" alt="Produto">
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <h4 style="font-size: 1rem; margin-bottom: 4px;">${data.name}</h4>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">Qtd: ${data.qty}${details ? ' · ' + details : ''}</span>
+                </div>
+            `;
+
+            document.getElementById('checkout-subtotal').textContent = formatPrice(total);
+            document.getElementById('checkout-total').textContent = formatPrice(total);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lambz - Produto</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .product-page {
+            padding: 40px 0 80px;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        @media (max-width: 860px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+
+        .product-gallery img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            box-shadow: var(--shadow-md);
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .product-details h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .detail-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--trust-color);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .detail-rating svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .detail-price {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .detail-price .current {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--action-color);
+        }
+
+        .detail-price .old {
+            font-size: 1.2rem;
+            color: #a1a1aa;
+            text-decoration: line-through;
+        }
+
+        .detail-price .discount {
+            background: var(--trust-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-group label {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            background: white;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .option-btn:hover {
+            border-color: var(--action-color);
+            color: var(--action-color);
+        }
+
+        .option-btn.active {
+            border-color: var(--action-color);
+            background: rgba(255, 107, 26, 0.06);
+            color: var(--action-color);
+        }
+
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            width: fit-content;
+        }
+
+        .qty-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--bg-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-color);
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .qty-btn:hover {
+            background: var(--action-color);
+            color: white;
+        }
+
+        .qty-value {
+            width: 56px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-left: 2px solid var(--border-color);
+            border-right: 2px solid var(--border-color);
+        }
+
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cta-section .btn-primary {
+            padding: 20px 32px;
+            font-size: 1.2rem;
+        }
+
+        .product-perks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .perk {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--trust-color);
+        }
+
+        .perk svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .reviews-section {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .review-card {
+            background: var(--bg-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .review-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--trust-color);
+        }
+
+        .review-stars {
+            display: flex;
+            gap: 2px;
+            color: var(--trust-color);
+        }
+
+        .review-stars svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
+        .review-verified {
+            color: var(--trust-color);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container flex justify-between items-center">
+            <a href="index.html" class="logo"><img src="logo.png" alt="Lambz" class="logo-img"></a>
+            <nav class="nav-links">
+                <a href="produtos.html">Coleção Premium</a>
+                <a href="sobre.html">Nossa Essência</a>
+                <a href="index.html#contato">Suporte</a>
+            </nav>
+            <div class="cart-btn" onclick="window.location.href='checkout.html'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- Product Page (Populated by JS) -->
+    <section class="product-page">
+        <div class="container">
+            <div class="product-layout">
+                <div class="product-gallery">
+                    <img id="product-main-img" src="" alt="">
+                </div>
+                <div class="product-details">
+                    <div class="detail-rating" id="product-rating"></div>
+                    <h1 id="product-name"></h1>
+                    <p id="product-description" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
+                    </p>
+                    <div class="detail-price" id="product-price-area"></div>
+
+                    <!-- Options populated by JS -->
+                    <div id="color-options"></div>
+                    <div id="size-options"></div>
+
+                    <!-- Quantity -->
+                    <div class="option-group">
+                        <label>Quantidade</label>
+                        <div class="qty-selector">
+                            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                            <div class="qty-value" id="qty-value">1</div>
+                            <button class="qty-btn" onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <!-- CTA -->
+                    <div class="cta-section">
+                        <button id="cta-buy" class="btn btn-primary btn-block" onclick="goToCheckout()">
+                            Levar pro Meu Pet 🐾
+                        </button>
+                    </div>
+
+                    <!-- Perks -->
+                    <div class="product-perks">
+                        <div class="perk"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                            </svg> Frete Grátis</div>
+                        <div class="perk"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                            </svg> Compra Segura</div>
+                        <div class="perk"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                            </svg> Despachado em 24h</div>
+                        <div class="perk"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg> Garantia Lambz</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews (populated by JS) -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="section-title" style="margin-bottom: 40px;">O Que Nossos Clientes Dizem</h2>
+            <div id="reviews-grid" class="grid"
+                style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <h4 class="footer-title" style="margin-bottom: 16px;">Precisa de Ajuda?</h4>
+            <p style="color: #a1a1aa; margin-bottom: 8px;">Fale diretamente conosco em:</p>
+            <p style="font-weight: bold; color: white; font-size: 1.1rem; margin-bottom: 32px;">lambzsuporte@gmail.com
+            </p>
+            <div class="footer-bottom">&copy; 2026 Lambz - Conforto para quem você ama.</div>
+        </div>
+    </footer>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // ── Estado da página ──
+        let currentProduct = null;
+        let qty = 1;
+        let selectedColor = null;
+        let selectedSize = null;
+
+        // ── Inicialização ──
+        (function init() {
+            const productId = getProductIdFromURL();
+            currentProduct = productId ? getProductById(productId) : LAMBZ_PRODUCTS[0];
+
+            if (!currentProduct) {
+                // Fallback: se ID não existe, mostra o primeiro
+                currentProduct = LAMBZ_PRODUCTS[0];
+            }
+
+            renderProduct();
+            renderReviews();
+
+            // Atualiza o título da aba
+            document.title = currentProduct.name + " - Lambz";
+        })();
+
+        function renderProduct() {
+            const p = currentProduct;
+
+            // Imagem
+            document.getElementById('product-main-img').src = p.image;
+            document.getElementById('product-main-img').alt = p.name;
+
+            // Rating
+            const ratingEl = document.getElementById('product-rating');
+            ratingEl.innerHTML = generateStars(p.rating) +
+                '<span style="margin-left: 4px;">' + p.rating.toFixed(1) + ' (' + p.reviewCount + ' avaliações)</span>';
+
+            // Nome e descrição
+            document.getElementById('product-name').textContent = p.name;
+            document.getElementById('product-description').textContent = p.description;
+
+            // Preço
+            document.getElementById('product-price-area').innerHTML =
+                '<span class="current">' + formatPrice(p.price) + '</span>' +
+                '<span class="old">' + formatPrice(p.oldPrice) + '</span>' +
+                '<span class="discount">' + calcDiscount(p.price, p.oldPrice) + '</span>';
+
+            // Cores
+            if (p.colors && p.colors.length > 0) {
+                selectedColor = p.colors[0];
+                document.getElementById('color-options').innerHTML =
+                    '<div class="option-group"><label>Cor</label><div class="option-buttons">' +
+                    p.colors.map((c, i) =>
+                        '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickColor(this, \'' + c + '\')">' + c + '</button>'
+                    ).join('') +
+                    '</div></div>';
+            }
+
+            // Tamanhos
+            if (p.sizes && p.sizes.length > 0) {
+                selectedSize = p.sizes[0];
+                document.getElementById('size-options').innerHTML =
+                    '<div class="option-group"><label>Tamanho</label><div class="option-buttons">' +
+                    p.sizes.map((s, i) =>
+                        '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickSize(this, \'' + s + '\')">' + s + '</button>'
+                    ).join('') +
+                    '</div></div>';
+            } else {
+                document.getElementById('size-options').innerHTML = '';
+            }
+        }
+
+        function renderReviews() {
+            const grid = document.getElementById('reviews-grid');
+            if (!currentProduct.reviews || currentProduct.reviews.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted);">Nenhuma avaliação ainda.</p>';
+                return;
+            }
+
+            grid.innerHTML = currentProduct.reviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <img class="review-avatar" src="${r.avatar}" alt="${r.name}">
+                        <div>
+                            <div style="font-weight: 700;">${r.name}</div>
+                            <div class="review-verified">✓ Compra Verificada</div>
+                        </div>
+                        <div class="review-stars" style="margin-left: auto;">
+                            ${generateStars(r.rating)}
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); line-height: 1.6;">"${r.text}"</p>
+                </div>
+            `).join('');
+        }
+
+        // ── Interações ──
+        function pickColor(btn, color) {
+            btn.parentElement.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedColor = color;
+        }
+
+        function pickSize(btn, size) {
+            btn.parentElement.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = size;
+        }
+
+        function changeQty(delta) {
+            qty = Math.max(1, qty + delta);
+            document.getElementById('qty-value').textContent = qty;
+        }
+
+        function goToCheckout() {
+            saveToCheckout(currentProduct.id, qty, selectedColor, selectedSize);
+            window.location.href = 'checkout.html';
+        }
+    </script>
+</body>
+
+</html>
