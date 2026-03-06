@@ -196,18 +196,14 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 ${payload}
             </div>
 
-            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px; background-color: #009ee3; border-color: #009ee3;">
+            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px; background-color: var(--primary-color); border-color: var(--primary-color);">
                 Copiar PIX Copia e Cola
             </button>
             
             <p style="font-size: 0.85rem; color: #64748b; margin-top: 16px;">
-                <i class="fas fa-spinner fa-spin" style="margin-right: 8px; color: #009ee3"></i>
+                <i class="fas fa-spinner fa-spin" style="margin-right: 8px; color: var(--primary-color)"></i>
                 Aguardando confirmação do pagamento... (Atualização Automática)
             </p>
-            
-            <div style="margin-top:24px; text-align:center;">
-                <img src="https://logos-world.net/wp-content/uploads/2020/10/Mercado-Pago-Logo.png" style="height:25px; object-fit:contain; opacity:0.6" alt="Mercado Pago"/>
-            </div>
         </div>
     `;
 
@@ -254,8 +250,8 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
 
         setTimeout(() => {
             btn.innerHTML = 'Copiar PIX Copia e Cola';
-            btn.style.backgroundColor = '#009ee3';
-            btn.style.borderColor = '#009ee3';
+            btn.style.backgroundColor = 'var(--primary-color)';
+            btn.style.borderColor = 'var(--primary-color)';
         }, 4000);
     });
 }
@@ -268,23 +264,70 @@ function showSuccessScreen(amount) {
     if (typeof localStorage !== 'undefined') localStorage.removeItem('lambz_checkout');
 
     checkoutWrapper.innerHTML = `
-        <div style="background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-top: 5px solid #10b981;">
-            <div style="width: 80px; height: 80px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);">
+        <div style="background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-top: 5px solid #10b981; animation: slideUpFade 0.6s ease-out;">
+            <div style="width: 80px; height: 80px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             
-            <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #064e3b; font-weight: 800;">Pagamento Aprovado!</h2>
-            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5;">O recebedor confirmou o pagamento de <strong>R$ ${amount.toFixed(2).replace('.', ',')}</strong>.<br>Seu pedido já foi enviado para separação em nosso centro de distribuição.</p>
+            <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #064e3b; font-weight: 800; animation: fadeIn 0.8s ease 0.4s both;">Tudo Certo, VIP! 🚀</h2>
+            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5; animation: fadeIn 0.8s ease 0.6s both;">O recebedor confirmou seu Pix de <strong>R$ ${amount.toFixed(2).replace('.', ',')}</strong> na velocidade da luz.<br>Seu novo par Lambz ou Bitpins já está entrando na fila de expedição.</p>
             
-            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 32px; text-align: left;">
-                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px;">Enviaremos o código de rastreio e a Nota Fiscal para o <strong>WhatsApp</strong> e <strong>E-mail</strong> informados no checkout.</p>
+            <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 32px; text-align: left; animation: fadeIn 0.8s ease 0.8s both;">
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px;">Enviaremos o código de rastreio e os detalhes mágicos direto no seu <strong>WhatsApp</strong> 🟢</p>
             </div>
 
-            <button onclick="window.location.href='index.html'" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; background-color: #10b981; border-color: #10b981;">
+            <button onclick="window.location.href='index.html'" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; background-color: #10b981; border-color: #10b981; animation: fadeIn 0.8s ease 1s both;">
                 Voltar à Loja
             </button>
         </div>
+
+        <style>
+            @keyframes slideUpFade {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounceIn {
+                0% { opacity: 0; transform: scale(0.3); }
+                50% { opacity: 1; transform: scale(1.05); }
+                70% { transform: scale(0.9); }
+                100% { transform: scale(1); }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>
     `;
+
+    // Disparar efeito UAU de Confetes na tela usando Canvas Confetti (Injetado dinamicamente para não pesar o site base)
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+    script.onload = () => {
+        var duration = 3 * 1000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#10b981', '#ffffff', '#cbd5e1'] // Cores da marca
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#10b981', '#ffffff', '#cbd5e1']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    };
+    document.body.appendChild(script);
 }
 
 /* ========================================================
