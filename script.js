@@ -235,9 +235,11 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 }
                 @media (max-width: 600px) {
                     .checkout-modal-card { padding: 32px 16px; }
-                    .checkout-modal-card h2 { font-size: 1.35rem !important; }
-                    .checkout-modal-card p { font-size: 0.9rem !important; }
-                    .checkout-modal-card img { width: 160px !important; height: 160px !important; }
+                    .checkout-modal-card h2 { font-size: 1.25rem !important; }
+                    .checkout-modal-card p { font-size: 0.85rem !important; line-height: 1.4 !important; }
+                    .checkout-modal-card img { width: 150px !important; height: 150px !important; }
+                    .checkout-modal-card button { font-size: 0.95rem !important; padding: 14px !important; }
+                    .checkout-modal-card .spinner-grow + p { font-size: 0.8rem !important; }
                 }
                 @keyframes spinner-grow {
                     0% { transform: scale(0); opacity: 1; }
@@ -333,7 +335,9 @@ function showSuccessScreen(amount) {
             }
             @media (max-width: 600px) {
                 .checkout-success-card { padding: 32px 16px; }
-                .checkout-success-card h2 { font-size: 1.4rem !important; }
+                .checkout-success-card h2 { font-size: 1.35rem !important; }
+                .checkout-success-card p { font-size: 0.85rem !important; line-height: 1.4 !important; }
+                .checkout-success-card button { font-size: 0.95rem !important; padding: 14px !important; }
             }
             @keyframes slideUpFade {
                 from { opacity: 0; transform: translateY(30px); }
