@@ -201,7 +201,7 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
     if (!checkoutWrapper) return;
 
     checkoutWrapper.innerHTML = `
-        <div style="background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <div class="checkout-modal-card">
             <div style="width: 64px; height: 64px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
             </div>
@@ -230,6 +230,15 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 </p>
             </div>
             <style>
+                .checkout-modal-card {
+                    background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                }
+                @media (max-width: 600px) {
+                    .checkout-modal-card { padding: 32px 16px; }
+                    .checkout-modal-card h2 { font-size: 1.35rem !important; }
+                    .checkout-modal-card p { font-size: 0.9rem !important; }
+                    .checkout-modal-card img { width: 160px !important; height: 160px !important; }
+                }
                 @keyframes spinner-grow {
                     0% { transform: scale(0); opacity: 1; }
                     100% { transform: scale(1); opacity: 0; }
@@ -301,7 +310,7 @@ function showSuccessScreen(amount) {
     if (typeof localStorage !== 'undefined') localStorage.removeItem('lambz_checkout');
 
     checkoutWrapper.innerHTML = `
-        <div style="background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-top: 5px solid #10b981; animation: slideUpFade 0.6s ease-out;">
+        <div class="checkout-success-card">
             <div style="width: 80px; height: 80px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4); animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
@@ -319,6 +328,13 @@ function showSuccessScreen(amount) {
         </div>
 
         <style>
+            .checkout-success-card {
+                background: white; padding: 48px 32px; border-radius: 12px; margin: 0 auto; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border-top: 5px solid #10b981; animation: slideUpFade 0.6s ease-out;
+            }
+            @media (max-width: 600px) {
+                .checkout-success-card { padding: 32px 16px; }
+                .checkout-success-card h2 { font-size: 1.4rem !important; }
+            }
             @keyframes slideUpFade {
                 from { opacity: 0; transform: translateY(30px); }
                 to { opacity: 1; transform: translateY(0); }
