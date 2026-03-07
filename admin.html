@@ -214,12 +214,33 @@
                 allOrders.push(data);
 
                 if (data.status === "PAGO") {
-                    receitaPaga += data.produto.preco;
+                    const preco = (data.produto && data.produto.preco) ? parseFloat(data.produto.preco) : 0;
+                    receitaPaga += preco;
                 }
             });
 
             document.getElementById("totalReceita").innerText = `Receita Pix: R$ ${receitaPaga.toFixed(2).replace('.', ',')}`;
             renderOrders();
+        }, (error) => {
+            console.error("Erro no Firebase:", error);
+            const container = document.getElementById('orders-container');
+
+            if (error.code === 'permission-denied' || error.message.includes('permission')) {
+                container.innerHTML = `
+                <div style="background: white; padding: 32px; border-radius: 12px; border: 2px solid #ef4444; color: #7f1d1d; text-align: center;">
+                    <i class="fas fa-shield-alt fa-3x" style="color: #ef4444; margin-bottom: 16px;"></i>
+                    <h3 style="margin-bottom: 12px; font-size: 1.3rem;">O Banco de Dados está Trancado!</h3>
+                    <p style="margin-bottom: 16px;">O Google bloqueou a listagem de pedidos. Para resolver agora:</p>
+                    <ol style="text-align: left; padding-left: 20px; font-size: 0.95rem; margin-bottom: 0;">
+                        <li>Entre no seu painel do Firebase > Firestore Database</li>
+                        <li>Vá na aba <b>Regras (Rules)</b></li>
+                        <li>Troque a palavra <code>false</code> por <code>true</code>. Deve ficar assim: <b>allow read, write: if true;</b></li>
+                        <li>Clique em <b>Publicar</b> e recarregue essa página.</li>
+                    </ol>
+                </div>`;
+            } else {
+                container.innerHTML = `<div style="text-align:center; padding: 40px; color:#ef4444;">Erro Interno: ${error.message}</div>`;
+            }
         });
 
         function formatPhone(phone) {
