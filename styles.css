@@ -240,13 +240,30 @@ h4 {
 }
 
 .trust-bar .flex {
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 24px;
 }
 
 .trust-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.trust-item.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .trust-item svg {
@@ -257,9 +274,7 @@ h4 {
 
 @media (max-width: 768px) {
   .trust-bar .flex {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
+    height: 20px;
   }
 
   .trust-bar {

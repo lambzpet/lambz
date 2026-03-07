@@ -2,6 +2,30 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Carousel trust-bar
+    const trustItems = document.querySelectorAll('.trust-item');
+    if (trustItems.length > 0) {
+        let currentIdx = 0;
+        trustItems[currentIdx].classList.add('active');
+        setInterval(() => {
+            trustItems[currentIdx].classList.remove('active');
+            currentIdx = (currentIdx + 1) % trustItems.length;
+            trustItems[currentIdx].classList.add('active');
+        }, 3000);
+    }
+
+    // Dynamic Cart Badge
+    const cartBadge = document.querySelector('.cart-badge');
+    if (cartBadge) {
+        const data = localStorage.getItem("lambz_checkout");
+        if (data) {
+            cartBadge.textContent = '1';
+            cartBadge.style.display = 'flex';
+        } else {
+            cartBadge.style.display = 'none';
+        }
+    }
+
     // Header Scroll Effect - Esconde/Mostra estilos baseados na rolagem
     const header = document.getElementById('header');
     if (header) {
