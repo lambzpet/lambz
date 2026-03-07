@@ -15,16 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Dynamic Cart Badge
-    const cartBadge = document.querySelector('.cart-badge');
-    if (cartBadge) {
+    window.updateCartBadge = function () {
+        // Support multiple badges on screen (desktop/mobile layout)
+        const badges = document.querySelectorAll('.cart-badge');
         const data = localStorage.getItem("lambz_checkout");
-        if (data) {
-            cartBadge.textContent = '1';
-            cartBadge.style.display = 'flex';
-        } else {
-            cartBadge.style.display = 'none';
-        }
-    }
+        badges.forEach(badge => {
+            if (data) {
+                badge.textContent = '1';
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        });
+    };
+
+    window.updateCartBadge();
 
     // Header Scroll Effect - Esconde/Mostra estilos baseados na rolagem
     const header = document.getElementById('header');

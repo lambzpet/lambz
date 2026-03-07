@@ -367,6 +367,7 @@
                 <a href="index.html#contato">Suporte</a>
             </nav>
             <div class="cart-btn" onclick="window.location.href='checkout.html'">
+                <div class="cart-badge" style="display: none;">0</div>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="9" cy="21" r="1"></circle>
@@ -406,7 +407,12 @@
                     </div>
 
                     <!-- CTA -->
-                    <div class="cta-section">
+                    <div class="cta-section" style="gap: 12px;">
+                        <button id="cta-cart" class="btn btn-block"
+                            style="background: white; color: var(--action-color); border: 2px solid var(--action-color); font-weight: 700; padding: 20px 32px; font-size: 1.2rem; cursor: pointer; border-radius: 99px;"
+                            onclick="addToCart()">
+                            Adicionar ao Carrinho
+                        </button>
                         <button id="cta-buy" class="btn btn-primary btn-block" onclick="goToCheckout()">
                             Levar pro Meu Pet 🐾
                         </button>
@@ -569,6 +575,23 @@
         function changeQty(delta) {
             qty = Math.max(1, qty + delta);
             document.getElementById('qty-value').textContent = qty;
+        }
+
+        function addToCart() {
+            saveToCheckout(currentProduct.id, qty, selectedColor, selectedSize);
+            if (window.updateCartBadge) window.updateCartBadge();
+
+            // Feedback simples e direto pro cliente sem travar (sem scroll forçado por alert)
+            const btn = document.getElementById('cta-cart');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check" style="color: #059669;"></i> Adicionado!';
+            btn.style.borderColor = '#059669';
+            btn.style.color = '#059669';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.borderColor = 'var(--action-color)';
+                btn.style.color = 'var(--action-color)';
+            }, 2000);
         }
 
         function goToCheckout() {

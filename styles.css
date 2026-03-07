@@ -246,7 +246,7 @@ h4 {
   height: 24px;
 }
 
-.trust-item {
+.trust-bar .trust-item {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -261,12 +261,12 @@ h4 {
   white-space: nowrap;
 }
 
-.trust-item.active {
+.trust-bar .trust-item.active {
   opacity: 1;
   pointer-events: auto;
 }
 
-.trust-item svg {
+.trust-bar .trust-item svg {
   width: 22px;
   height: 22px;
   fill: currentColor;
