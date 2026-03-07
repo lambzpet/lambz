@@ -84,8 +84,11 @@ async function generatePix() {
     const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
     const whatsapp = document.getElementById('whatsapp').value;
     const email = document.getElementById('email').value;
+    const rua = document.getElementById('rua').value;
+    const numero = document.getElementById('numero').value;
+    const complemento = document.getElementById('complemento').value;
 
-    const camposIds = ['nome', 'cpf', 'whatsapp', 'email'];
+    const camposIds = ['nome', 'cpf', 'whatsapp', 'email', 'rua', 'numero'];
     let temErro = false;
 
     // Reseta bordas e verifica quem está vazio
@@ -159,6 +162,22 @@ async function generatePix() {
             const copiaCola = result.point_of_interaction.transaction_data.qr_code;
             const base64Img = result.point_of_interaction.transaction_data.qr_code_base64;
             const transactionId = result.id;
+
+            // Salva o Pedido no Firebase (Função declarada no checkout.html)
+            if (window.lambzSaveOrder) {
+                await window.lambzSaveOrder({
+                    transactionId: transactionId,
+                    nome: nome,
+                    cpf: cpf,
+                    whatsapp: whatsapp,
+                    email: email,
+                    rua: rua,
+                    numero: numero,
+                    complemento: complemento,
+                    orderInfo: orderData,
+                    totalAmount: totalAmount
+                });
+            }
 
             showPixModal_MP(copiaCola, base64Img, totalAmount, orderData, email, transactionId);
         } else {
@@ -242,6 +261,12 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
             // MP devolve 'approved' minúsculo
             if (checkData.status === 'approved') {
                 clearInterval(pollingInterval);
+
+                // Atualiza o Status para PAGO no Firebase
+                if (window.lambzUpdateOrderStatus) {
+                    await window.lambzUpdateOrderStatus(transactionId, "PAGO");
+                }
+
                 showSuccessScreen(amount);
             }
         } catch (e) {

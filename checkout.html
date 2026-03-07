@@ -213,7 +213,73 @@
             document.getElementById('checkout-total').textContent = formatPrice(total);
         }
     </script>
+    <!-- FIREBASE MODULAR C/ FIRESTORE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVw4-mqEgldVepnpXfmxUumhgS6mAlNVk",
+            authDomain: "lambz-55076.firebaseapp.com",
+            projectId: "lambz-55076",
+            storageBucket: "lambz-55076.firebasestorage.app",
+            messagingSenderId: "335255604910",
+            appId: "1:335255604910:web:470b0bb72e59596c1be73f",
+            measurementId: "G-ZNW5JTXDK3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Deixar global para o script.js conseguir chamar
+        window.lambzSaveOrder = async function (orderData) {
+            try {
+                // A chave primária (Nome do Documento) no Banco será o Próprio ID da Transação do MP
+                const orderRef = doc(db, "pedidos", orderData.transactionId.toString());
+
+                await setDoc(orderRef, {
+                    transactionId: orderData.transactionId,
+                    cliente: {
+                        nome: orderData.nome,
+                        cpf: orderData.cpf,
+                        whatsapp: orderData.whatsapp,
+                        email: orderData.email
+                    },
+                    endereco: {
+                        rua: orderData.rua,
+                        numero: orderData.numero,
+                        complemento: orderData.complemento || ""
+                    },
+                    produto: {
+                        nome: orderData.orderInfo.name || "N/D",
+                        preco: orderData.totalAmount || 0,
+                        quantidade: orderData.orderInfo.qty || 1,
+                        tamanho: orderData.orderInfo.size || "Único",
+                        cor: orderData.orderInfo.color || "Branco"
+                    },
+                    status: "PENDENTE", // Pode virar "PAGO" via Webhook ou Frontend Polling
+                    dataCriacao: serverTimestamp()
+                });
+
+                console.log("✅ Pedido gravado com sucesso no Firebase!");
+            } catch (error) {
+                console.error("❌ Erro ao gravar no Firebase:", error);
+            }
+        };
+
+        // Função global de atualização p/ marcar como pago pelo frontend
+        window.lambzUpdateOrderStatus = async function (transactionId, novoStatus) {
+            try {
+                await setDoc(doc(db, "pedidos", transactionId.toString()), {
+                    status: novoStatus,
+                    dataPagamento: serverTimestamp()
+                }, { merge: true });
+                console.log(`✅ Pedido ${transactionId} atualizado para ${novoStatus}!`);
+            } catch (e) {
+                console.error("Erro ao atualizar status:", e);
+            }
+        };
+    </script>
 </body>
 
 </html>
