@@ -215,8 +215,12 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 ${payload}
             </div>
 
-            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 24px;">
+            <button id="copyPixBtn" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; margin-bottom: 12px;">
                 Copiar PIX Copia e Cola
+            </button>
+
+            <button onclick="showSuccessScreen(${amount})" style="width: 100%; padding: 12px; background: #fef08a; border: 1px dashed #ca8a04; color: #a16207; font-size: 0.9rem; margin-bottom: 24px; cursor: pointer; border-radius: 8px;">
+                ⚙️ [Modo Teste] Simular Pagamento
             </button>
             
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; background: #f0fdf4; padding: 12px; border-radius: 8px; border: 1px solid #bbf7d0;">
@@ -302,11 +306,11 @@ function showSuccessScreen(amount) {
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             
-            <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #064e3b; font-weight: 800; animation: fadeIn 0.8s ease 0.4s both;">Tudo Certo, VIP! 🚀</h2>
-            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5; animation: fadeIn 0.8s ease 0.6s both;">O recebedor confirmou seu Pix de <strong>R$ ${amount.toFixed(2).replace('.', ',')}</strong> na velocidade da luz.<br>Seu novo par Lambz ou Bitpins já está entrando na fila de expedição.</p>
+            <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #064e3b; font-weight: 800; animation: fadeIn 0.8s ease 0.4s both;">Pagamento Confirmado!</h2>
+            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5; animation: fadeIn 0.8s ease 0.6s both;">Recebemos o seu pagamento no valor de <strong>R$ ${amount.toFixed(2).replace('.', ',')}</strong>.<br>Seu pedido já está em fase de separação em nosso estoque.</p>
             
             <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 32px; text-align: left; animation: fadeIn 0.8s ease 0.8s both;">
-                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px;">Enviaremos o código de rastreio e os detalhes mágicos direto no seu <strong>WhatsApp</strong> 🟢</p>
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px;">Enviaremos o código de rastreamento e as atualizações do pedido para o seu <strong>WhatsApp</strong> e <strong>E-mail</strong> cadastrados.</p>
             </div>
 
             <button onclick="window.location.href='index.html'" class="btn btn-primary" style="width: 100%; padding: 18px; font-size: 1.1rem; background-color: #10b981; border-color: #10b981; animation: fadeIn 0.8s ease 1s both;">
