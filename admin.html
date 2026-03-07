@@ -5,41 +5,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo | Lambz</title>
-    <!-- CSS (Usando a mesma folha de rosto da loja para padrão e estilo rápido inline) -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: #f1f5f9;
+            margin: 0;
+        }
+
+        /* LOGIN */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #064e3b 0%, #0f766e 100%);
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 16px;
+            padding: 48px 36px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin: 0 0 8px;
+            font-size: 1.6rem;
+            color: #0f172a;
+        }
+
+        .login-card p {
+            color: #64748b;
+            margin: 0 0 32px;
+            font-size: 0.95rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #047857;
+        }
+
+        .login-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 12px;
+            display: none;
+        }
+
+        /* ADMIN LAYOUT */
+        .admin-screen {
+            display: none;
         }
 
         .admin-header {
             background: #064e3b;
             color: white;
-            padding: 24px;
+            padding: 20px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .admin-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .dashboard-container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 24px;
         }
 
+        /* TABS */
+        .admin-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 32px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .admin-tab.active {
+            color: #059669;
+            border-bottom-color: #059669;
+        }
+
+        .admin-tab:hover {
+            color: #0f172a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* FILTERS */
         .filters {
             display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
@@ -49,7 +170,7 @@
             background: white;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #475569;
             transition: all 0.2s;
         }
@@ -60,46 +181,47 @@
             color: white;
         }
 
+        /* ORDER CARDS */
         .orders-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         .order-card {
             background: white;
             border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
             border: 1px solid #e2e8f0;
             display: grid;
             grid-template-columns: 1fr 1.5fr 1fr auto;
-            gap: 24px;
+            gap: 20px;
             align-items: center;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .order-card:hover {
             border-color: #059669;
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.08);
         }
 
         @media (max-width: 900px) {
             .order-card {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 12px;
             }
         }
 
         .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
+            gap: 5px;
+            padding: 5px 10px;
             border-radius: 999px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 800;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.04em;
         }
 
         .status-badge.pago {
@@ -112,31 +234,42 @@
             color: #ca8a04;
         }
 
+        .status-badge.lixeira {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
         .order-meta p {
             margin: 0;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .order-meta h3 {
-            margin: 0 0 8px 0;
-            font-size: 1.1rem;
+            margin: 0 0 6px;
+            font-size: 1rem;
             color: #0f172a;
+        }
+
+        .order-meta h4 {
+            margin: 0 0 4px;
+            font-size: 0.95rem;
+            color: #334155;
         }
 
         .btn-zap {
             background: #25D366;
             color: white;
             border: none;
-            padding: 10px 16px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: background 0.2s;
         }
 
@@ -144,47 +277,305 @@
             background: #128C7E;
             color: white;
         }
+
+        .btn-trash {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-trash:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-restore {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .btn-restore:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-delete-permanent {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* STATS ROW */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #059669;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* PRODUCT ADMIN */
+        .product-form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 28px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-grid input,
+        .form-grid textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d4d4d8;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        .form-grid input:focus,
+        .form-grid textarea:focus {
+            outline: none;
+            border-color: #059669;
+        }
+
+        .form-grid label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #334155;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
     </style>
 </head>
 
 <body>
 
-    <header class="admin-header">
-        <div class="admin-title">
-            <i class="fas fa-chart-pie"></i> Lambz CRM Admin
+    <!-- TELA DE LOGIN -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <i class="fas fa-lock" style="font-size: 2rem; color: #059669; margin-bottom: 16px;"></i>
+            <h2>Painel Lambz</h2>
+            <p>Digite a senha de administrador para acessar</p>
+            <input type="password" class="login-input" id="adminPassword" placeholder="Senha de acesso" autofocus>
+            <button class="login-btn" onclick="tryLogin()">
+                <i class="fas fa-sign-in-alt"></i> Entrar
+            </button>
+            <p class="login-error" id="loginError">Senha incorreta. Tente novamente.</p>
         </div>
-        <div style="font-size: 0.9rem; opacity: 0.9;">
-            <i class="fas fa-circle"
-                style="color: #34d399; font-size: 0.6rem; vertical-align: middle; margin-right: 4px;"></i> Sistema
-            Online
-        </div>
-    </header>
+    </div>
 
-    <div class="dashboard-container">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-            <h2 style="font-size: 1.8rem; color: #1e293b; font-weight: 800;">Central de Vendas</h2>
-            <div style="font-weight: 700; color: #059669; font-size: 1.2rem;" id="totalReceita">R$ 0,00 Hoje</div>
-        </div>
+    <!-- TELA ADMIN (Escondida até login) -->
+    <div class="admin-screen" id="adminScreen">
+        <header class="admin-header">
+            <div class="admin-title">
+                <i class="fas fa-chart-pie"></i> Lambz CRM
+            </div>
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <span style="font-size: 0.85rem; opacity: 0.8;">
+                    <i class="fas fa-circle" style="color: #34d399; font-size: 0.5rem; vertical-align: middle;"></i>
+                    Online
+                </span>
+                <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </header>
 
-        <div class="filters">
-            <button class="filter-btn active" onclick="setFilter('to-dos')">Todos</button>
-            <button class="filter-btn" onclick="setFilter('pagos')">Pagos</button>
-            <button class="filter-btn" onclick="setFilter('pendentes')">Pendentes</button>
-        </div>
+        <div class="dashboard-container">
+            <!-- TABS -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchTab('pedidos', this)"><i
+                        class="fas fa-shopping-bag"></i> Pedidos</button>
+                <button class="admin-tab" onclick="switchTab('lixeira', this)"><i class="fas fa-trash-alt"></i>
+                    Lixeira</button>
+                <button class="admin-tab" onclick="switchTab('produtos', this)"><i class="fas fa-box"></i>
+                    Produtos</button>
+            </div>
 
-        <div class="orders-grid" id="orders-container">
-            <div style="text-align: center; padding: 40px; color: #94a3b8;">
-                <i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Carregando pedidos do Firebase...
+            <!-- TAB: PEDIDOS -->
+            <div class="tab-content active" id="tab-pedidos">
+                <div class="stats-row" id="statsRow">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Total de Pedidos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPagos">0</div>
+                        <div class="stat-label">Pagos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPendentes">0</div>
+                        <div class="stat-label">Pendentes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statReceita" style="color: #16a34a;">R$ 0</div>
+                        <div class="stat-label">Receita</div>
+                    </div>
+                </div>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="setFilter('to-dos', this)">Todos</button>
+                    <button class="filter-btn" onclick="setFilter('pagos', this)">Pagos</button>
+                    <button class="filter-btn" onclick="setFilter('pendentes', this)">Pendentes</button>
+                </div>
+                <div class="orders-grid" id="orders-container"></div>
+            </div>
+
+            <!-- TAB: LIXEIRA -->
+            <div class="tab-content" id="tab-lixeira">
+                <h3 style="margin-bottom: 20px; color: #64748b;"><i class="fas fa-trash-alt"></i> Itens Movidos para a
+                    Lixeira</h3>
+                <div class="orders-grid" id="trash-container">
+                    <div
+                        style="text-align:center; padding: 40px; color:#94a3b8; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                        Lixeira vazia.</div>
+                </div>
+            </div>
+
+            <!-- TAB: PRODUTOS -->
+            <div class="tab-content" id="tab-produtos">
+                <h3 style="margin-bottom: 20px; color: #1e293b; font-size: 1.3rem;">Cadastrar Novo Produto</h3>
+                <div class="product-form-card">
+                    <div class="form-grid">
+                        <div><label>Nome do Produto *</label><input type="text" id="prod-name"
+                                placeholder="Ex: Lambz Classic"></div>
+                        <div><label>Preço (R$) *</label><input type="number" id="prod-price" placeholder="149.90"
+                                step="0.01"></div>
+                        <div><label>Preço Antigo (R$)</label><input type="number" id="prod-old-price"
+                                placeholder="299.90" step="0.01"></div>
+                        <div><label>URL da Imagem Principal *</label><input type="text" id="prod-image"
+                                placeholder="https://i.imgur.com/..."></div>
+                        <div><label>Cores (separadas por vírgula)</label><input type="text" id="prod-colors"
+                                placeholder="Branco, Preto, Azul"></div>
+                        <div><label>Tamanhos (separados por vírgula)</label><input type="text" id="prod-sizes"
+                                placeholder="38, 39, 40, 41, 42"></div>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <label>Descrição Curta</label>
+                        <textarea id="prod-desc" rows="2"
+                            style="width:100%; padding:12px; border:1px solid #d4d4d8; border-radius:8px; font-family:inherit; font-size:0.95rem;"
+                            placeholder="Descrição rápida do produto..."></textarea>
+                    </div>
+                    <button onclick="saveProduct()"
+                        style="margin-top: 20px; padding: 14px 32px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer;">
+                        <i class="fas fa-plus"></i> Salvar Produto
+                    </button>
+                </div>
+
+                <h3 style="margin: 32px 0 20px; color: #1e293b; font-size: 1.2rem;">Produtos Cadastrados</h3>
+                <div class="orders-grid" id="products-container">
+                    <div
+                        style="text-align:center; padding: 40px; color:#94a3b8; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                        Carregando produtos...</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <script>
+        // ========== AUTENTICAÇÃO SIMPLES ==========
+        const ADMIN_PASSWORD = 'lambz2026';
+
+        function tryLogin() {
+            const pw = document.getElementById('adminPassword').value;
+            if (pw === ADMIN_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminScreen').style.display = 'block';
+                sessionStorage.setItem('lambz_admin', 'true');
+            } else {
+                const err = document.getElementById('loginError');
+                err.style.display = 'block';
+                document.getElementById('adminPassword').style.borderColor = '#ef4444';
+            }
+        }
+
+        document.getElementById('adminPassword').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+        function doLogout() {
+            sessionStorage.removeItem('lambz_admin');
+            document.getElementById('adminScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('adminPassword').value = '';
+        }
+
+        // Auto-login se já tiver sessão
+        if (sessionStorage.getItem('lambz_admin') === 'true') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminScreen').style.display = 'block';
+        }
+
+        // ========== TABS ==========
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+    </script>
+
     <!-- FIREBASE MODULAR C/ FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-        // Cole suas chaves de acesso aqui (As mesmas do checkout.html)
         const firebaseConfig = {
             apiKey: "AIzaSyCVw4-mqEgldVepnpXfmxUumhgS6mAlNVk",
             authDomain: "lambz-55076.firebaseapp.com",
@@ -200,122 +591,199 @@
 
         let currentFilter = 'to-dos';
         let allOrders = [];
+        let trashOrders = [];
 
-        // Conexão Tempo Real c/ Firebase
-        const q = query(collection(db, "pedidos"), orderBy("dataCriacao", "desc"));
-
-        onSnapshot(q, (querySnapshot) => {
+        // ========== PEDIDOS (Tempo Real) ==========
+        const qPedidos = query(collection(db, "pedidos"), orderBy("dataCriacao", "desc"));
+        onSnapshot(qPedidos, (snap) => {
             allOrders = [];
-            let receitaPaga = 0;
+            let receitaPaga = 0, totalPagos = 0, totalPendentes = 0;
 
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                data.id = doc.id;
+            snap.forEach(d => {
+                const data = d.data(); data.id = d.id;
                 allOrders.push(data);
-
-                if (data.status === "PAGO") {
-                    const preco = (data.produto && data.produto.preco) ? parseFloat(data.produto.preco) : 0;
-                    receitaPaga += preco;
-                }
+                if (data.status === "PAGO") { totalPagos++; receitaPaga += parseFloat(data.produto?.preco || 0); }
+                else { totalPendentes++; }
             });
 
-            document.getElementById("totalReceita").innerText = `Receita Pix: R$ ${receitaPaga.toFixed(2).replace('.', ',')}`;
+            document.getElementById('statTotal').textContent = allOrders.length;
+            document.getElementById('statPagos').textContent = totalPagos;
+            document.getElementById('statPendentes').textContent = totalPendentes;
+            document.getElementById('statReceita').textContent = `R$ ${receitaPaga.toFixed(2).replace('.', ',')}`;
             renderOrders();
-        }, (error) => {
-            console.error("Erro no Firebase:", error);
-            const container = document.getElementById('orders-container');
-
-            if (error.code === 'permission-denied' || error.message.includes('permission')) {
-                container.innerHTML = `
-                <div style="background: white; padding: 32px; border-radius: 12px; border: 2px solid #ef4444; color: #7f1d1d; text-align: center;">
-                    <i class="fas fa-shield-alt fa-3x" style="color: #ef4444; margin-bottom: 16px;"></i>
-                    <h3 style="margin-bottom: 12px; font-size: 1.3rem;">O Banco de Dados está Trancado!</h3>
-                    <p style="margin-bottom: 16px;">O Google bloqueou a listagem de pedidos. Para resolver agora:</p>
-                    <ol style="text-align: left; padding-left: 20px; font-size: 0.95rem; margin-bottom: 0;">
-                        <li>Entre no seu painel do Firebase > Firestore Database</li>
-                        <li>Vá na aba <b>Regras (Rules)</b></li>
-                        <li>Troque a palavra <code>false</code> por <code>true</code>. Deve ficar assim: <b>allow read, write: if true;</b></li>
-                        <li>Clique em <b>Publicar</b> e recarregue essa página.</li>
-                    </ol>
-                </div>`;
-            } else {
-                container.innerHTML = `<div style="text-align:center; padding: 40px; color:#ef4444;">Erro Interno: ${error.message}</div>`;
-            }
+        }, err => {
+            console.error("Erro Firebase:", err);
+            document.getElementById('orders-container').innerHTML = `<div style="background:white;padding:32px;border-radius:12px;border:2px solid #ef4444;color:#7f1d1d;text-align:center;">
+                <b>Erro de permissão.</b> Vá no Firebase > Firestore > Regras e mude para: <code>allow read, write: if true;</code></div>`;
         });
 
-        function formatPhone(phone) {
-            return phone.replace(/\D/g, ""); // Remove não-números
-        }
+        // ========== LIXEIRA (Tempo Real) ==========
+        const qTrash = query(collection(db, "lixeira"), orderBy("dataCriacao", "desc"));
+        onSnapshot(qTrash, (snap) => {
+            trashOrders = [];
+            snap.forEach(d => { const data = d.data(); data.id = d.id; trashOrders.push(data); });
+            renderTrash();
+        }, err => console.error("Erro lixeira:", err));
 
-        window.setFilter = function (filterName) {
-            currentFilter = filterName;
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        // ========== PRODUTOS (Tempo Real) ==========
+        let allProducts = [];
+        const qProducts = query(collection(db, "produtos"));
+        onSnapshot(qProducts, (snap) => {
+            allProducts = [];
+            snap.forEach(d => { const data = d.data(); data.id = d.id; allProducts.push(data); });
+            renderProducts();
+        }, err => console.error("Erro produtos:", err));
+
+        // ========== RENDER PEDIDOS ==========
+        window.setFilter = function (f, btn) {
+            currentFilter = f;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             renderOrders();
-        }
+        };
+
+        function fmtPhone(p) { return (p || '').replace(/\D/g, ''); }
 
         function renderOrders() {
-            const container = document.getElementById('orders-container');
-            container.innerHTML = '';
-
+            const c = document.getElementById('orders-container');
             const filtrados = allOrders.filter(o => {
                 if (currentFilter === 'pagos') return o.status === 'PAGO';
                 if (currentFilter === 'pendentes') return o.status === 'PENDENTE';
                 return true;
             });
+            if (!filtrados.length) { c.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;">Nenhum pedido encontrado.</div>`; return; }
 
-            if (filtrados.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding: 40px; color:#94a3b8; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">Nenhum pedido encontrado.</div>`;
-                return;
-            }
-
-            filtrados.forEach(order => {
+            c.innerHTML = filtrados.map(order => {
                 const isPaid = order.status === "PAGO";
-                const whatsFormated = formatPhone(order.cliente.whatsapp);
+                const wf = fmtPhone(order.cliente?.whatsapp);
+                const nome = order.cliente?.nome || "N/D";
+                const msg = isPaid
+                    ? `Olá ${nome.split(' ')[0]}, recebemos seu pagamento do *${order.produto?.nome || 'pedido'}* na Lambz! Já estamos separando.`
+                    : `Olá ${nome.split(' ')[0]}, vi que você tentou gerar um Pix na Lambz mas o pagamento não foi concluído. Posso ajudar?`;
+                const zapLink = `https://wa.me/55${wf}?text=${encodeURIComponent(msg)}`;
 
-                // Mensagem pronta para o WhatsApp dependendo do status
-                const defaultMsg = isPaid
-                    ? `Olá ${order.cliente.nome.split(' ')[0]}, tudo bem? Recebemos seu pagamento do par *${order.produto.nome}* na Lambz! Seu pedido já está sendo separado.`
-                    : `Olá ${order.cliente.nome.split(' ')[0]}, vi que você tentou gerar um Pix do *${order.produto.nome}* na Lambz mas não concluímos o pagamento. Posso ajudar com algo?`;
-
-                const zapLink = `https://wa.me/55${whatsFormated}?text=${encodeURIComponent(defaultMsg)}`;
-
-                const orderHTML = `
-                    <div class="order-card" style="border-left: 4px solid ${isPaid ? '#10b981' : '#f59e0b'};">
-                        <div class="order-meta">
-                            <span class="status-badge ${isPaid ? 'pago' : 'pendente'}">
-                                ${isPaid ? '<i class="fas fa-check-circle"></i> APITO FINAL (Pago)' : '<i class="fas fa-clock"></i> PENDENTE'}
-                            </span>
-                            <div style="margin-top: 12px; font-weight: 700; color: #0f172a; font-size: 1.1rem;">
-                                R$ ${order.produto.preco.toFixed(2).replace('.', ',')}
-                            </div>
-                            <p style="font-size: 0.8rem; margin-top:4px;">ID: #${order.transactionId}</p>
-                        </div>
-
-                        <div class="order-meta">
-                            <h3><i class="fas fa-user" style="color:#94a3b8; margin-right:6px;"></i> ${order.cliente.nome}</h3>
-                            <p><i class="fab fa-whatsapp" style="color:#94a3b8; margin-right:6px;"></i> ${order.cliente.whatsapp}</p>
-                            <p style="margin-top: 4px;"><i class="fas fa-envelope" style="color:#94a3b8; margin-right:6px;"></i> ${order.cliente.email}</p>
-                        </div>
-
-                        <div class="order-meta">
-                            <h4 style="margin: 0 0 4px 0; color: #334155;">👟 ${order.produto.nome}</h4>
-                            <p style="font-size: 0.85rem;"><i class="fas fa-palette"></i> ${order.produto.cor} | <i class="fas fa-shoe-prints"></i> Tam: ${order.produto.tamanho}</p>
-                            <div style="background: #f8fafc; padding: 8px; border-radius: 6px; margin-top: 8px; border: 1px solid #e2e8f0;">
-                                <p style="font-size: 0.8rem; line-height: 1.4;"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${order.endereco.rua}, ${order.endereco.numero} ${order.endereco.complemento ? ' - ' + order.endereco.complemento : ''}</p>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; gap: 8px;">
-                            <a href="${zapLink}" target="_blank" class="btn-zap">
-                                <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i> Chamar Cliente
-                            </a>
+                return `<div class="order-card" style="border-left:4px solid ${isPaid ? '#10b981' : '#f59e0b'};">
+                    <div class="order-meta">
+                        <span class="status-badge ${isPaid ? 'pago' : 'pendente'}">${isPaid ? '<i class="fas fa-check-circle"></i> PAGO' : '<i class="fas fa-clock"></i> PENDENTE'}</span>
+                        <div style="margin-top:10px;font-weight:700;color:#0f172a;font-size:1.05rem;">R$ ${parseFloat(order.produto?.preco || 0).toFixed(2).replace('.', ',')}</div>
+                        <p style="font-size:0.75rem;margin-top:4px;">ID: #${order.transactionId || order.id}</p>
+                    </div>
+                    <div class="order-meta">
+                        <h3><i class="fas fa-user" style="color:#94a3b8;margin-right:5px;"></i> ${nome}</h3>
+                        <p><i class="fab fa-whatsapp" style="color:#94a3b8;margin-right:5px;"></i> ${order.cliente?.whatsapp || '-'}</p>
+                        <p style="margin-top:3px;"><i class="fas fa-envelope" style="color:#94a3b8;margin-right:5px;"></i> ${order.cliente?.email || '-'}</p>
+                    </div>
+                    <div class="order-meta">
+                        <h4>👟 ${order.produto?.nome || 'N/D'}</h4>
+                        <p><i class="fas fa-palette"></i> ${order.produto?.cor || '-'} | Tam: ${order.produto?.tamanho || '-'}</p>
+                        <div style="background:#f8fafc;padding:6px;border-radius:6px;margin-top:6px;border:1px solid #e2e8f0;">
+                            <p style="font-size:0.78rem;"><i class="fas fa-map-marker-alt" style="color:#ef4444;"></i> ${order.endereco?.rua || '-'}, ${order.endereco?.numero || '-'} ${order.endereco?.complemento ? '- ' + order.endereco.complemento : ''}</p>
                         </div>
                     </div>
-                `;
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <a href="${zapLink}" target="_blank" class="btn-zap"><i class="fab fa-whatsapp"></i> Chamar</a>
+                        <button class="btn-trash" onclick="moveToTrash('${order.id}')"><i class="fas fa-trash-alt"></i> Lixeira</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
 
-                container.innerHTML += orderHTML;
-            });
+        // ========== LIXEIRA ==========
+        window.moveToTrash = async function (orderId) {
+            if (!confirm('Mover este pedido para a lixeira?')) return;
+            const order = allOrders.find(o => o.id === orderId);
+            if (!order) return;
+            try {
+                await setDoc(doc(db, "lixeira", orderId), { ...order, removidoEm: serverTimestamp() });
+                await deleteDoc(doc(db, "pedidos", orderId));
+            } catch (e) { console.error("Erro ao mover:", e); alert("Erro ao mover para lixeira."); }
+        };
+
+        window.restoreFromTrash = async function (orderId) {
+            const order = trashOrders.find(o => o.id === orderId);
+            if (!order) return;
+            try {
+                const { removidoEm, ...original } = order;
+                await setDoc(doc(db, "pedidos", orderId), original);
+                await deleteDoc(doc(db, "lixeira", orderId));
+            } catch (e) { console.error("Erro ao restaurar:", e); }
+        };
+
+        window.deletePermanently = async function (orderId) {
+            if (!confirm('Excluir PERMANENTEMENTE? Essa ação não pode ser desfeita.')) return;
+            try { await deleteDoc(doc(db, "lixeira", orderId)); } catch (e) { console.error(e); }
+        };
+
+        function renderTrash() {
+            const c = document.getElementById('trash-container');
+            if (!trashOrders.length) { c.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;">Lixeira vazia.</div>`; return; }
+
+            c.innerHTML = trashOrders.map(order => `
+                <div class="order-card" style="border-left:4px solid #ef4444; opacity: 0.85;">
+                    <div class="order-meta">
+                        <span class="status-badge lixeira"><i class="fas fa-trash-alt"></i> LIXEIRA</span>
+                        <div style="margin-top:10px;font-weight:700;font-size:1.05rem;">R$ ${parseFloat(order.produto?.preco || 0).toFixed(2).replace('.', ',')}</div>
+                    </div>
+                    <div class="order-meta">
+                        <h3>${order.cliente?.nome || 'N/D'}</h3>
+                        <p>${order.cliente?.email || '-'}</p>
+                    </div>
+                    <div class="order-meta"><h4>👟 ${order.produto?.nome || 'N/D'}</h4></div>
+                    <div style="display:flex;flex-direction:column;gap:6px;">
+                        <button class="btn-restore" onclick="restoreFromTrash('${order.id}')"><i class="fas fa-undo"></i> Restaurar</button>
+                        <button class="btn-delete-permanent" onclick="deletePermanently('${order.id}')"><i class="fas fa-times"></i> Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ========== PRODUTOS ==========
+        window.saveProduct = async function () {
+            const name = document.getElementById('prod-name').value;
+            const price = parseFloat(document.getElementById('prod-price').value);
+            const image = document.getElementById('prod-image').value;
+            if (!name || !price || !image) { alert('Preencha nome, preço e imagem.'); return; }
+
+            const prodData = {
+                name,
+                price,
+                oldPrice: parseFloat(document.getElementById('prod-old-price').value) || null,
+                image,
+                colors: document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean),
+                sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean),
+                description: document.getElementById('prod-desc').value || '',
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                const id = 'prod-' + Date.now();
+                await setDoc(doc(db, "produtos", id), prodData);
+                alert('Produto salvo!');
+                ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-colors', 'prod-sizes', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
+            } catch (e) { console.error(e); alert('Erro ao salvar produto.'); }
+        };
+
+        window.deleteProduct = async function (id) {
+            if (!confirm('Remover este produto?')) return;
+            try { await deleteDoc(doc(db, "produtos", id)); } catch (e) { console.error(e); }
+        };
+
+        function renderProducts() {
+            const c = document.getElementById('products-container');
+            if (!allProducts.length) { c.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;">Nenhum produto cadastrado ainda.</div>`; return; }
+
+            c.innerHTML = allProducts.map(p => `
+                <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:16px;">
+                    <img src="${p.image}" style="width:60px;height:60px;border-radius:8px;object-fit:cover;" alt="${p.name}">
+                    <div style="flex:1;">
+                        <h4 style="margin:0 0 4px;color:#0f172a;">${p.name}</h4>
+                        <span style="font-weight:800;color:#059669;">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</span>
+                        ${p.oldPrice ? `<span style="text-decoration:line-through;color:#94a3b8;margin-left:8px;font-size:0.85rem;">R$ ${parseFloat(p.oldPrice).toFixed(2).replace('.', ',')}</span>` : ''}
+                        <p style="font-size:0.8rem;color:#64748b;margin-top:4px;">${(p.colors || []).join(', ')} | ${(p.sizes || []).join(', ')}</p>
+                    </div>
+                    <button class="btn-trash" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            `).join('');
         }
     </script>
 </body>
