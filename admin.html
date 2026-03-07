@@ -492,39 +492,61 @@
 
             <!-- TAB: PRODUTOS -->
             <div class="tab-content" id="tab-produtos">
-                <h3 style="margin-bottom: 20px; color: #1e293b; font-size: 1.3rem;">Cadastrar Novo Produto</h3>
-                <div class="product-form-card">
+
+                <h3 style="margin-bottom: 16px; color: #1e293b; font-size: 1.2rem;">
+                    <i class="fas fa-store" style="color:#059669;"></i> Produtos Ativos na Loja <span
+                        style="font-size:0.8rem;color:#94a3b8;">(products.js)</span>
+                </h3>
+                <div class="orders-grid" id="live-products-container" style="margin-bottom: 32px;"></div>
+
+                <div style="border-top: 2px dashed #e2e8f0; margin: 32px 0;"></div>
+
+                <h3 style="margin-bottom: 16px; color: #1e293b; font-size: 1.2rem;">
+                    <i class="fas fa-plus-circle" style="color:#059669;"></i> Cadastrar Novo Produto no Firebase
+                </h3>
+                <div class="product-form-card" id="productFormCard">
                     <div class="form-grid">
                         <div><label>Nome do Produto *</label><input type="text" id="prod-name"
                                 placeholder="Ex: Lambz Classic"></div>
-                        <div><label>Preço (R$) *</label><input type="number" id="prod-price" placeholder="149.90"
-                                step="0.01"></div>
-                        <div><label>Preço Antigo (R$)</label><input type="number" id="prod-old-price"
-                                placeholder="299.90" step="0.01"></div>
+                        <div><label>Preço (centavos, ex: 14990) *</label><input type="number" id="prod-price"
+                                placeholder="14990"></div>
+                        <div><label>Preço Antigo (centavos)</label><input type="number" id="prod-old-price"
+                                placeholder="29990"></div>
                         <div><label>URL da Imagem Principal *</label><input type="text" id="prod-image"
                                 placeholder="https://i.imgur.com/..."></div>
                         <div><label>Cores (separadas por vírgula)</label><input type="text" id="prod-colors"
                                 placeholder="Branco, Preto, Azul"></div>
                         <div><label>Tamanhos (separados por vírgula)</label><input type="text" id="prod-sizes"
-                                placeholder="38, 39, 40, 41, 42"></div>
+                                placeholder="P, M, G"></div>
                     </div>
                     <div style="margin-top: 16px;">
-                        <label>Descrição Curta</label>
+                        <label>Descrição</label>
                         <textarea id="prod-desc" rows="2"
                             style="width:100%; padding:12px; border:1px solid #d4d4d8; border-radius:8px; font-family:inherit; font-size:0.95rem;"
-                            placeholder="Descrição rápida do produto..."></textarea>
+                            placeholder="Descrição do produto..."></textarea>
                     </div>
-                    <button onclick="saveProduct()"
-                        style="margin-top: 20px; padding: 14px 32px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer;">
-                        <i class="fas fa-plus"></i> Salvar Produto
-                    </button>
+                    <input type="hidden" id="prod-edit-id" value="">
+                    <div style="display:flex; gap:12px; margin-top:20px;">
+                        <button onclick="saveProduct()"
+                            style="padding: 14px 32px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer;"
+                            id="btnSaveProduct">
+                            <i class="fas fa-plus"></i> Salvar Produto
+                        </button>
+                        <button onclick="cancelEdit()"
+                            style="padding: 14px 24px; background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; border-radius: 8px; font-weight: 600; cursor: pointer; display:none;"
+                            id="btnCancelEdit">
+                            Cancelar Edição
+                        </button>
+                    </div>
                 </div>
 
-                <h3 style="margin: 32px 0 20px; color: #1e293b; font-size: 1.2rem;">Produtos Cadastrados</h3>
+                <h3 style="margin: 32px 0 16px; color: #1e293b; font-size: 1.1rem;">
+                    <i class="fas fa-database" style="color:#64748b;"></i> Produtos no Firebase
+                </h3>
                 <div class="orders-grid" id="products-container">
                     <div
                         style="text-align:center; padding: 40px; color:#94a3b8; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                        Carregando produtos...</div>
+                        Carregando...</div>
                 </div>
             </div>
         </div>
@@ -738,53 +760,128 @@
         }
 
         // ========== PRODUTOS ==========
+        window.editProduct = function (id) {
+            const p = allProducts.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('prod-edit-id').value = id;
+            document.getElementById('prod-name').value = p.name || '';
+            document.getElementById('prod-price').value = p.price || '';
+            document.getElementById('prod-old-price').value = p.oldPrice || '';
+            document.getElementById('prod-image').value = p.image || '';
+            document.getElementById('prod-colors').value = (p.colors || []).join(', ');
+            document.getElementById('prod-sizes').value = (p.sizes || []).join(', ');
+            document.getElementById('prod-desc').value = p.description || '';
+
+            document.getElementById('btnSaveProduct').innerHTML = '<i class="fas fa-save"></i> Atualizar Produto';
+            document.getElementById('btnCancelEdit').style.display = 'inline-block';
+            document.getElementById('productFormCard').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.cancelEdit = function () {
+            document.getElementById('prod-edit-id').value = '';
+            ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-colors', 'prod-sizes', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
+            document.getElementById('btnSaveProduct').innerHTML = '<i class="fas fa-plus"></i> Salvar Produto';
+            document.getElementById('btnCancelEdit').style.display = 'none';
+        };
+
         window.saveProduct = async function () {
             const name = document.getElementById('prod-name').value;
-            const price = parseFloat(document.getElementById('prod-price').value);
+            const price = parseInt(document.getElementById('prod-price').value);
             const image = document.getElementById('prod-image').value;
-            if (!name || !price || !image) { alert('Preencha nome, preço e imagem.'); return; }
+            if (!name || isNaN(price) || !image) { alert('Preencha nome, preço (em centavos) e imagem.'); return; }
 
             const prodData = {
                 name,
                 price,
-                oldPrice: parseFloat(document.getElementById('prod-old-price').value) || null,
+                oldPrice: parseInt(document.getElementById('prod-old-price').value) || 0,
                 image,
                 colors: document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean),
                 sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean),
                 description: document.getElementById('prod-desc').value || '',
-                createdAt: serverTimestamp()
+                updatedAt: serverTimestamp()
             };
 
+            const editId = document.getElementById('prod-edit-id').value;
+
             try {
-                const id = 'prod-' + Date.now();
-                await setDoc(doc(db, "produtos", id), prodData);
-                alert('Produto salvo!');
-                ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-colors', 'prod-sizes', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
+                if (editId) {
+                    await setDoc(doc(db, "produtos", editId), prodData, { merge: true });
+                    alert('Produto atualizado!');
+                } else {
+                    prodData.createdAt = serverTimestamp();
+                    const id = 'prod-' + Date.now();
+                    await setDoc(doc(db, "produtos", id), prodData);
+                    alert('Produto salvo!');
+                }
+                cancelEdit();
             } catch (e) { console.error(e); alert('Erro ao salvar produto.'); }
         };
 
         window.deleteProduct = async function (id) {
-            if (!confirm('Remover este produto?')) return;
+            if (!confirm('Remover este produto do Firebase? Isso tira ele da loja online.')) return;
             try { await deleteDoc(doc(db, "produtos", id)); } catch (e) { console.error(e); }
         };
 
         function renderProducts() {
             const c = document.getElementById('products-container');
-            if (!allProducts.length) { c.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;">Nenhum produto cadastrado ainda.</div>`; return; }
+            if (!allProducts.length) { c.innerHTML = `<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;">Nenhum produto cadastrado no Firebase ainda. O site usará os estáticos.</div>`; return; }
 
             c.innerHTML = allProducts.map(p => `
                 <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:16px;">
-                    <img src="${p.image}" style="width:60px;height:60px;border-radius:8px;object-fit:cover;" alt="${p.name}">
+                    <img src="${p.image}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;border:1px solid #e2e8f0;" alt="${p.name}">
                     <div style="flex:1;">
-                        <h4 style="margin:0 0 4px;color:#0f172a;">${p.name}</h4>
-                        <span style="font-weight:800;color:#059669;">R$ ${parseFloat(p.price).toFixed(2).replace('.', ',')}</span>
-                        ${p.oldPrice ? `<span style="text-decoration:line-through;color:#94a3b8;margin-left:8px;font-size:0.85rem;">R$ ${parseFloat(p.oldPrice).toFixed(2).replace('.', ',')}</span>` : ''}
-                        <p style="font-size:0.8rem;color:#64748b;margin-top:4px;">${(p.colors || []).join(', ')} | ${(p.sizes || []).join(', ')}</p>
+                        <h4 style="margin:0 0 4px;color:#0f172a;font-size:1.05rem;">${p.name}</h4>
+                        <span style="font-weight:800;color:#059669;font-size:1.1rem;">R$ ${(p.price / 100).toFixed(2).replace('.', ',')}</span>
+                        ${p.oldPrice ? `<span style="text-decoration:line-through;color:#94a3b8;margin-left:8px;font-size:0.85rem;">R$ ${(p.oldPrice / 100).toFixed(2).replace('.', ',')}</span>` : ''}
+                        <p style="font-size:0.8rem;color:#64748b;margin-top:4px;">Cores: ${(p.colors || []).join(', ') || 'N/A'} | Tam: ${(p.sizes || []).join(', ') || 'N/A'}</p>
                     </div>
-                    <button class="btn-trash" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash-alt"></i></button>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <button class="btn-restore" onclick="editProduct('${p.id}')" style="background:white; color:#475569; border:1px solid #cbd5e1;"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-trash" onclick="deleteProduct('${p.id}')"><i class="fas fa-trash-alt"></i> Remover</button>
+                    </div>
                 </div>
             `).join('');
+
+            renderLiveProducts();
         }
+
+        // Renderizar lista do products.js
+        window.importStaticProduct = async function (id) {
+            if (!window.LAMBZ_PRODUCTS) return;
+            const p = window.LAMBZ_PRODUCTS.find(x => x.id === id);
+            if (!p) return;
+            try {
+                await setDoc(doc(db, "produtos", p.id), p);
+                alert('Produto migrado pro Firebase com Sucesso!');
+            } catch (e) { console.error(e); }
+        }
+
+        function renderLiveProducts() {
+            const container = document.getElementById('live-products-container');
+            if (!container || !window.LAMBZ_PRODUCTS) return;
+
+            container.innerHTML = window.LAMBZ_PRODUCTS.map(p => {
+                const isFirebase = p.id.startsWith('prod-') || allProducts.some(fb => fb.id === p.id);
+                return `
+                <div style="background:white;border-radius:12px;padding:16px;border:1px solid #e2e8f0;display:flex;align-items:center;gap:16px;">
+                    <img src="${p.image}" style="width:60px;height:60px;border-radius:8px;object-fit:cover; opacity: ${isFirebase ? 1 : 0.6}" alt="${p.name}">
+                    <div style="flex:1;">
+                        <h4 style="margin:0 0 4px;color:#0f172a;">${p.name} ${isFirebase ? '<i class="fas fa-cloud text-green" style="color:#059669;font-size:0.8rem;" title="Carregado do Firebase"></i>' : ''}</h4>
+                        <span style="font-weight:800;color:#059669;">R$ ${(p.price / 100).toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    ${!isFirebase ? `<button class="btn-restore" onclick="importStaticProduct('${p.id}')"><i class="fas fa-upload"></i> Salvar no Firebase</button>` : '<span style="color:#059669; font-size:0.85rem; font-weight:bold;">Sincronizado</span>'}
+                </div>
+                `
+            }).join('');
+        }
+
+        // Sobrescrever também o renderProducts do js para poder chamar a live
+        setTimeout(() => {
+            renderLiveProducts();
+            // Assinar a janela caso o products carregue de modo assincrono globalmente
+            window.addEventListener('load', renderLiveProducts);
+        }, 1000);
+
     </script>
 </body>
 

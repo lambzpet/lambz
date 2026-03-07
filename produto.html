@@ -244,6 +244,114 @@
             font-size: 0.8rem;
             font-weight: 700;
         }
+
+        @media (max-width: 768px) {
+            .product-page {
+                padding: 24px 0 48px;
+            }
+
+            .product-details h1 {
+                font-size: 1.4rem !important;
+            }
+
+            .product-details p {
+                font-size: 0.85rem !important;
+                line-height: 1.5 !important;
+            }
+
+            .detail-price {
+                gap: 10px;
+                flex-wrap: nowrap;
+                align-items: center;
+            }
+
+            .detail-price .current {
+                font-size: 1.5rem !important;
+                white-space: nowrap;
+            }
+
+            .detail-price .old {
+                font-size: 0.85rem !important;
+                white-space: nowrap;
+            }
+
+            .detail-price .discount {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+                white-space: nowrap;
+            }
+
+            .option-group label {
+                font-size: 0.85rem;
+            }
+
+            .option-btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+
+            .qty-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            .qty-value {
+                width: 48px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            .cta-section .btn-primary {
+                padding: 16px 24px !important;
+                font-size: 0.95rem !important;
+            }
+
+            .product-perks {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .perk {
+                font-size: 0.75rem;
+                gap: 6px;
+            }
+
+            .perk svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .reviews-section {
+                padding: 32px 0;
+            }
+
+            .review-card {
+                padding: 16px;
+            }
+
+            .review-header {
+                gap: 8px;
+            }
+
+            .review-avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            #reviews-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .detail-rating {
+                font-size: 0.85rem;
+            }
+
+            .detail-rating svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
     </style>
 </head>
 
@@ -468,6 +576,20 @@
             window.location.href = 'checkout.html';
         }
     </script>
+    <script>
+        // Quando o Firebase carregar produtos novos, re-renderizar
+        window.onProductsLoaded = function () {
+            const productId = getProductIdFromURL();
+            currentProduct = productId ? getProductById(productId) : LAMBZ_PRODUCTS[0];
+            if (!currentProduct && LAMBZ_PRODUCTS.length) currentProduct = LAMBZ_PRODUCTS[0];
+            if (currentProduct) {
+                renderProduct();
+                renderReviews();
+                document.title = currentProduct.name + " - Lambz";
+            }
+        };
+    </script>
+    <script type="module" src="firebase-products.js"></script>
 </body>
 
 </html>

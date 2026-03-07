@@ -106,98 +106,8 @@
     <!-- Products Grid (Todos os 4 Produtos) -->
     <section class="products" style="padding-top: 20px;">
         <div class="container">
-            <div class="grid">
-
-                <!-- Product 1 -->
-                <a href="produto.html?id=cama-nuvem" class="product-card">
-                    <div class="product-image">
-                        <div class="product-badge">Mais Vendido</div>
-                        <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Cama Nuvem Lambz">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 5.0 (428 avaliações)
-                        </div>
-                        <h3 class="product-title">Cama Terapêutica Nuvem</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 149,90</span>
-                            <span class="price-old">R$ 299,90</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
-                    </div>
-                </a>
-
-                <!-- Product 2 -->
-                <a href="produto.html?id=coleira-conforto" class="product-card">
-                    <div class="product-image">
-                        <div class="product-badge">Novidade</div>
-                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Coleira Ergonômica">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.9 (156 avaliações)
-                        </div>
-                        <h3 class="product-title">Coleira Peitoral Conforto Absoluto</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 89,90</span>
-                            <span class="price-old">R$ 159,90</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
-                    </div>
-                </a>
-
-                <!-- Product 3 -->
-                <a href="produto.html?id=bebedouro-zen" class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Bebedouro Inteligente">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.9 (89 avaliações)
-                        </div>
-                        <h3 class="product-title">Bebedouro Fonte Zen Água Corrente</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 179,90</span>
-                            <span class="price-old">R$ 249,90</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
-                    </div>
-                </a>
-
-                <!-- Product 4 -->
-                <a href="produto.html?id=escova-pelos" class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1628009559385-484bd7480a40?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Kit Escova">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.8 (210 avaliações)
-                        </div>
-                        <h3 class="product-title">Luva e Escova Removedora de Pelos</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 49,90</span>
-                            <span class="price-old">R$ 99,90</span>
-                        </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
-                    </div>
-                </a>
-
+            <div class="grid" id="produtos-grid">
+                <!-- Preenchido pelo JS -->
             </div>
         </div>
     </section>
@@ -215,7 +125,57 @@
         </div>
     </footer>
 
+    <script src="products.js"></script>
     <script src="script.js"></script>
+    <script>
+        // Formata centavos para reais (caso não exista)
+        if (typeof formatPrice !== 'function') {
+            window.formatPrice = function (cents) {
+                return "R$ " + (cents / 100).toFixed(2).replace(".", ",");
+            };
+        }
+
+        // Callback que o firebase-products.js chama após carregar
+        window.onProductsLoaded = function () {
+            renderProductGrid();
+        };
+
+        // Renderiza a grid de produtos
+        function renderProductGrid() {
+            const grid = document.getElementById('produtos-grid');
+            if (!grid) return;
+
+            if (!LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhum produto encontrado.</p>';
+                return;
+            }
+
+            grid.innerHTML = LAMBZ_PRODUCTS.map(p => `
+                <a href="produto.html?id=${p.id}" class="product-card">
+                    <div class="product-image">
+                        ${p.badge ? '<div class="product-badge">' + p.badge + '</div>' : ''}
+                        <img src="${p.image}" alt="${p.name}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            ${(parseFloat(p.rating) || 5.0).toFixed(1)} (${p.reviewCount || 0} avaliações)
+                        </div>
+                        <h3 class="product-title">${p.name}</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">${formatPrice(p.price)}</span>
+                            ${p.oldPrice ? '<span class="price-old">' + formatPrice(p.oldPrice) + '</span>' : ''}
+                        </div>
+                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Renderiza com os produtos estáticos inicialmente
+        renderProductGrid();
+    </script>
+    <script type="module" src="firebase-products.js"></script>
 </body>
 
 </html>

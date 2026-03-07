@@ -23,7 +23,7 @@
  * - reviews: array de avaliações de clientes
  */
 
-const LAMBZ_PRODUCTS = [
+window.LAMBZ_PRODUCTS = [
     {
         id: "cama-nuvem",
         name: "Cama Terapêutica Nuvem",
