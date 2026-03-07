@@ -307,7 +307,7 @@ function showSuccessScreen(amount) {
             </div>
             
             <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #064e3b; font-weight: 800; animation: fadeIn 0.8s ease 0.4s both;">Pagamento Confirmado!</h2>
-            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5; animation: fadeIn 0.8s ease 0.6s both;">Recebemos o seu pagamento no valor de <strong>R$ ${amount.toFixed(2).replace('.', ',')}</strong>.<br>Seu pedido já está em fase de separação em nosso estoque.</p>
+            <p style="color: #334155; margin-bottom: 24px; font-size: 1rem; line-height: 1.5; animation: fadeIn 0.8s ease 0.6s both;">Recebemos o seu pagamento.<br>Seu pedido já está em fase de separação em nosso estoque.</p>
             
             <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 32px; text-align: left; animation: fadeIn 0.8s ease 0.8s both;">
                 <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 4px;">Enviaremos o código de rastreamento e as atualizações do pedido para o seu <strong>WhatsApp</strong> e <strong>E-mail</strong> cadastrados.</p>
