@@ -35,6 +35,13 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+html {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 a {
@@ -601,6 +608,7 @@ h4 {
   margin-bottom: 12px;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
 }
 
 .product-image img {
