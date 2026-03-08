@@ -9,34 +9,6 @@
 </head>
 
 <body>
-
-    <!-- Trust Bar -->
-    <div class="trust-bar">
-        <div class="container flex">
-            <div class="trust-item">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
-                </svg>
-                Compra 100% Segura e Protegida
-            </div>
-            <div class="trust-item">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-                </svg>
-                Frete Grátis para todo o Brasil
-            </div>
-            <div class="trust-item">
-                <svg viewBox="0 0 24 24">
-                    <path
-                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-                Mais de 5.000 clientes satisfeitos
-            </div>
-        </div>
-    </div>
-
     <!-- Header -->
     <header class="header" id="header">
         <div class="container flex justify-between items-center">
@@ -60,33 +32,70 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <span class="hero-tag">O Padrão Ouro em Cuidado Pet</span>
-            <h1>A Melhor Experiência<br>Para Quem Você <span>Mais Ama</span></h1>
-            <p>Descubra a seleção premium de acessórios e bem-estar. O conforto absoluto que seu companheiro merece e a
-                durabilidade que você exige.</p>
-            <a href="produtos.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 20px 48px;">
-                Explorar Coleção
-                <svg style="margin-left: 12px;" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-            </a>
+    <!-- Banner Section -->
+    <section class="banner-section">
+        <div class="banner-grid">
+            <div class="banner-item"><img
+                    src="https://images.unsplash.com/photo-1544281679-66dc8d8ce30e?auto=format&fit=crop&q=80&w=600&h=800"
+                    alt="Banner 1"></div>
+            <div class="banner-item"><img
+                    src="https://images.unsplash.com/photo-1541599540903-216a46ca1dc0?auto=format&fit=crop&q=80&w=600&h=800"
+                    alt="Banner 2"></div>
+            <div class="banner-item"><img
+                    src="https://images.unsplash.com/photo-1534361960057-19889db9621e?auto=format&fit=crop&q=80&w=600&h=800"
+                    alt="Banner 3"></div>
+            <div class="banner-item"><img
+                    src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&q=80&w=600&h=800"
+                    alt="Banner 4"></div>
         </div>
     </section>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <div class="container flex">
+            <div class="trust-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <div class="trust-item-text">
+                    <span class="trust-item-title">Segurança</span>
+                    <span class="trust-item-desc">Compra 100% protegida</span>
+                </div>
+            </div>
+            <div class="trust-item">
+                <svg viewBox="0 0 24 24">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+                <div class="trust-item-text">
+                    <span class="trust-item-title">Frete Grátis</span>
+                    <span class="trust-item-desc">Para todo o Brasil</span>
+                </div>
+            </div>
+            <div class="trust-item">
+                <svg viewBox="0 0 24 24">
+                    <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
+                </svg>
+                <div class="trust-item-text">
+                    <span class="trust-item-title">Qualidade</span>
+                    <span class="trust-item-desc">+5.000 clientes felizes</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Products Grid -->
     <section id="produtos" class="products">
         <div class="container">
-            <h2 class="section-title">Os Favoritos Lambz</h2>
             <div class="grid">
 
                 <!-- Product 1 -->
                 <a href="produto.html?id=cama-nuvem" class="product-card">
                     <div class="product-image">
-                        <div class="product-badge">Mais Vendido</div>
                         <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=400&h=400"
                             alt="Cama Nuvem Lambz">
                     </div>
@@ -102,14 +111,12 @@
                             <span class="price-current">R$ 149,90</span>
                             <span class="price-old">R$ 299,90</span>
                         </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
                     </div>
                 </a>
 
                 <!-- Product 2 -->
                 <a href="produto.html?id=coleira-conforto" class="product-card">
                     <div class="product-image">
-                        <div class="product-badge">Novidade</div>
                         <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400&h=400"
                             alt="Coleira Ergonômica">
                     </div>
@@ -120,12 +127,11 @@
                                     d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                             </svg> 4.9 (156 avaliações)
                         </div>
-                        <h3 class="product-title">Coleira Peitoral Conforto Absoluto</h3>
+                        <h3 class="product-title">Coleira Peitoral Conforto</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 89,90</span>
                             <span class="price-old">R$ 159,90</span>
                         </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
                     </div>
                 </a>
 
@@ -142,12 +148,32 @@
                                     d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                             </svg> 4.9 (89 avaliações)
                         </div>
-                        <h3 class="product-title">Bebedouro Fonte Zen Água Corrente</h3>
+                        <h3 class="product-title">Bebedouro Fonte Zen</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 179,90</span>
                             <span class="price-old">R$ 249,90</span>
                         </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
+                    </div>
+                </a>
+
+                <!-- Product 4 -->
+                <a href="produto.html?id=escova-pelos" class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1628009559385-484bd7480a40?auto=format&fit=crop&q=80&w=400&h=400"
+                            alt="Kit Escova">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating">
+                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg> 4.8 (210 avaliações)
+                        </div>
+                        <h3 class="product-title">Luva e Escova de Pelos</h3>
+                        <div class="product-price-row">
+                            <span class="price-current">R$ 49,90</span>
+                            <span class="price-old">R$ 99,90</span>
+                        </div>
                     </div>
                 </a>
 
@@ -211,7 +237,6 @@
             grid.innerHTML = LAMBZ_PRODUCTS.map(p => `
                 <a href="produto.html?id=${p.id}" class="product-card">
                     <div class="product-image">
-                        ${p.badge ? '<div class="product-badge">' + p.badge + '</div>' : ''}
                         <img src="${p.image}" alt="${p.name}">
                     </div>
                     <div class="product-info">
@@ -224,7 +249,6 @@
                             <span class="price-current">${formatPrice(p.price)}</span>
                             ${p.oldPrice ? '<span class="price-old">' + formatPrice(p.oldPrice) + '</span>' : ''}
                         </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
                     </div>
                 </a>
             `).join('');

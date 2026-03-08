@@ -154,7 +154,6 @@
             grid.innerHTML = LAMBZ_PRODUCTS.map(p => `
                 <a href="produto.html?id=${p.id}" class="product-card">
                     <div class="product-image">
-                        ${p.badge ? '<div class="product-badge">' + p.badge + '</div>' : ''}
                         <img src="${p.image}" alt="${p.name}">
                     </div>
                     <div class="product-info">
@@ -167,7 +166,6 @@
                             <span class="price-current">${formatPrice(p.price)}</span>
                             ${p.oldPrice ? '<span class="price-old">' + formatPrice(p.oldPrice) + '</span>' : ''}
                         </div>
-                        <button class="btn btn-primary btn-block">Eu Quero</button>
                     </div>
                 </a>
             `).join('');
