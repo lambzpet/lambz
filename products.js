@@ -69,6 +69,43 @@ window.LAMBZ_PRODUCTS = [
                 text: "Comprei pra usar nas trilhas com minha Golden e funcionou perfeito. Não vaza nada. Super recomendo!"
             }
         ]
+    },
+    {
+        id: "alimentador-inteligente-camera",
+        name: "Alimentador Automático Inteligente com Câmera",
+        price: 286990,
+        oldPrice: 399990,
+        image: "https://placehold.co/800x800/1a1a2e/ffffff?text=Alimentador+Smart",
+        images: [
+            "https://placehold.co/800x800/1a1a2e/ffffff?text=Alimentador+Smart"
+        ],
+        colorImages: {
+            "Preto": "https://placehold.co/800x800/1a1a2e/ffffff?text=Preto",
+            "Branco": "https://placehold.co/800x800/f5f5f5/333333?text=Branco"
+        },
+        description: "Alimentador inteligente para cães e gatos com câmera HD 1080P e visão noturna. Veja e ouça seu pet em qualquer lugar! Programe de 1 a 6 refeições diárias com porções personalizáveis. Conexão WiFi 2.4/5 GHz pelo app \"Pet Zero\" — controle pelo celular, mesmo à distância. Capacidade de 4L, tigela de 6,7 polegadas. Alimentação dupla (bateria + cabo) para funcionar sem parar.",
+        rating: 4.8,
+        reviewCount: 89,
+        badge: "Lançamento",
+        colors: ["Preto", "Branco"],
+        sizes: ["1 Tigela (2.4/5GHz)", "2 Tigelas (2.4/5GHz)"],
+        reviews: [
+            {
+                name: "Mariana Costa",
+                rating: 5,
+                text: "Comprei pra alimentar meus 2 gatos enquanto viajo a trabalho. A câmera é nítida e o app funciona super bem. Nunca mais me preocupo se comeram!"
+            },
+            {
+                name: "Thiago Rezende",
+                rating: 5,
+                text: "Produto incrível. Programação fácil, o WiFi 5GHz conecta sem travar e a visão noturna da câmera é surpreendente. Vale cada centavo."
+            },
+            {
+                name: "Juliana Alves",
+                rating: 4,
+                text: "Funciona muito bem, meu dog já se acostumou com o barulho. Única coisa é que o app demora um pouco pra conectar na primeira vez, depois roda liso."
+            }
+        ]
     }
 ];
 
