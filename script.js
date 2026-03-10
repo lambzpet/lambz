@@ -94,39 +94,45 @@ function preencherTeste() {
     document.getElementById('cpf').value = "191.191.191-00";
     document.getElementById('whatsapp').value = "(11) 99999-9999";
     document.getElementById('email').value = "teste@lambz.com";
-    document.getElementById('rua').value = "Rua Teste MP";
-    document.getElementById('numero').value = "123";
+    document.getElementById('cep').value = "01310-100";
+    document.getElementById('cidade-estado').value = "SP - São Paulo";
+    document.getElementById('bairro').value = "Bela Vista";
+    document.getElementById('rua').value = "Avenida Paulista";
+    document.getElementById('numero').value = "1578";
+    document.getElementById('complemento').value = "Sala 12";
 
     // Esconder possível mensagem de erro
     const errorDiv = document.getElementById('checkout-error');
     if (errorDiv) errorDiv.style.display = 'none';
 
     // Limpar bordas vermelhas
-    ['nome', 'cpf', 'whatsapp', 'email'].forEach(id => {
+    ['nome', 'cpf', 'whatsapp', 'email', 'cep', 'cidade-estado', 'bairro', 'rua', 'numero'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.border = '1px solid var(--border-color)';
     });
 }
 
-// --- INTEGRAÇÃO MERCADO PAGO (EM CONSTRUÇÃO) ---
 // --- INTEGRAÇÃO MERCADO PAGO ---
 async function generatePix() {
-    const nome = document.getElementById('nome').value;
+    const nome = document.getElementById('nome').value.trim();
     const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-    const whatsapp = document.getElementById('whatsapp').value;
-    const email = document.getElementById('email').value;
-    const rua = document.getElementById('rua').value;
-    const numero = document.getElementById('numero').value;
-    const complemento = document.getElementById('complemento').value;
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const cep = document.getElementById('cep').value.trim();
+    const cidadeEstado = document.getElementById('cidade-estado').value.trim();
+    const bairro = document.getElementById('bairro').value.trim();
+    const rua = document.getElementById('rua').value.trim();
+    const numero = document.getElementById('numero').value.trim();
+    const complemento = document.getElementById('complemento').value.trim();
 
-    const camposIds = ['nome', 'cpf', 'whatsapp', 'email', 'rua', 'numero'];
+    // Validar TODOS os campos obrigatórios
+    const camposIds = ['nome', 'cpf', 'whatsapp', 'email', 'cep', 'cidade-estado', 'bairro', 'rua', 'numero'];
     let temErro = false;
 
-    // Reseta bordas e verifica quem está vazio
     camposIds.forEach(id => {
         const elemento = document.getElementById(id);
         if (elemento) {
-            if (!elemento.value) {
+            if (!elemento.value.trim()) {
                 elemento.style.border = '2px solid #ef4444';
                 temErro = true;
             } else {
@@ -138,26 +144,27 @@ async function generatePix() {
     const errorDiv = document.getElementById('checkout-error');
     if (temErro) {
         if (errorDiv) errorDiv.style.display = 'block';
-        // Deslizar até o formulário do erro p/ cliente ver
         document.querySelector('.checkout-box').scrollIntoView({ behavior: 'smooth' });
         return;
     } else {
         if (errorDiv) errorDiv.style.display = 'none';
     }
 
+    // Dados do carrinho
     const cartData = typeof getCheckoutData === 'function' ? getCheckoutData() : null;
     const orderData = cartData || {
         name: "Produto Fallback",
-        price: 149.90,
+        price: 14990,
         qty: 1
     };
 
-    // Mercado Pago aceita R$ 1,00 para teste de boa. E a taxa do PIX no MP é ~0.99% (cerca de 1 centavo)!
-    const totalAmount = 1.00; // orderData.price * orderData.qty;
+    // MODO TESTE: R$ 1,00 — trocar pra valor real quando for ao vivo
+    const TEST_MODE = true;
+    const totalAmount = TEST_MODE ? 1.00 : (orderData.price / 100) * orderData.qty;
 
     const btn = document.querySelector('button[onclick="generatePix()"]');
     const originalText = btn.innerHTML;
-    btn.innerHTML = 'Gerando PIX seguro... <i class="fas fa-spinner fa-spin"></i>';
+    btn.innerHTML = 'Gerando PIX seguro...';
     btn.disabled = true;
 
     try {
@@ -168,13 +175,13 @@ async function generatePix() {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer APP_USR-4885585679236314-030619-a4f4b9fd60b88aa080825e0de62ef613-455827848',
-                'X-Idempotency-Key': Date.now().toString() // Identificador único pro MP não duplicar cobrança
+                'X-Idempotency-Key': Date.now().toString()
             },
             body: JSON.stringify({
                 transaction_amount: Number(totalAmount.toFixed(2)),
                 description: `Lambz - ${orderData.name}`,
                 payment_method_id: "pix",
-                notification_url: webhookUrl, // <--- Aqui o Mercado Pago avisa a nossa Vercel (Webhook IPN)
+                notification_url: webhookUrl,
                 payer: {
                     email: email,
                     first_name: nome.split(' ')[0] || "Cliente",
@@ -194,19 +201,14 @@ async function generatePix() {
             const base64Img = result.point_of_interaction.transaction_data.qr_code_base64;
             const transactionId = result.id;
 
-            // Salva o Pedido no Firebase (Função declarada no checkout.html)
+            // Salva o Pedido COMPLETO no Firebase
             if (window.lambzSaveOrder) {
                 await window.lambzSaveOrder({
-                    transactionId: transactionId,
-                    nome: nome,
-                    cpf: cpf,
-                    whatsapp: whatsapp,
-                    email: email,
-                    rua: rua,
-                    numero: numero,
-                    complemento: complemento,
+                    transactionId,
+                    nome, cpf, whatsapp, email,
+                    cep, cidadeEstado, bairro, rua, numero, complemento,
                     orderInfo: orderData,
-                    totalAmount: totalAmount
+                    totalAmount
                 });
             }
 

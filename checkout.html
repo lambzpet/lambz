@@ -8,6 +8,41 @@
     <link rel="stylesheet" href="styles.css">
     <script src="products.js"></script>
     <script src="script.js" defer></script>
+    <style>
+        /* Checkout-specific responsive */
+        .checkout-wrapper {
+            padding-top: 32px;
+            padding-bottom: 60px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-wrapper {
+                padding-top: 16px;
+            }
+
+            .checkout-box {
+                padding: 20px 16px;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .checkout-title {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
 </head>
 
 <body style="background-color: #f7f5f0;"> <!-- Um off-white mais marcado para o checkout -->
@@ -239,7 +274,6 @@
         // Deixar global para o script.js conseguir chamar
         window.lambzSaveOrder = async function (orderData) {
             try {
-                // A chave primária (Nome do Documento) no Banco será o Próprio ID da Transação do MP
                 const orderRef = doc(db, "pedidos", orderData.transactionId.toString());
 
                 await setDoc(orderRef, {
@@ -251,18 +285,24 @@
                         email: orderData.email
                     },
                     endereco: {
-                        rua: orderData.rua,
-                        numero: orderData.numero,
+                        cep: orderData.cep || "",
+                        cidadeEstado: orderData.cidadeEstado || "",
+                        bairro: orderData.bairro || "",
+                        rua: orderData.rua || "",
+                        numero: orderData.numero || "",
                         complemento: orderData.complemento || ""
                     },
                     produto: {
+                        id: orderData.orderInfo.id || "desconhecido",
                         nome: orderData.orderInfo.name || "N/D",
-                        preco: orderData.totalAmount || 0,
+                        preco: orderData.orderInfo.price || 0,
+                        imagem: orderData.orderInfo.image || "",
                         quantidade: orderData.orderInfo.qty || 1,
-                        tamanho: orderData.orderInfo.size || "Único",
-                        cor: orderData.orderInfo.color || "Branco"
+                        cor: orderData.orderInfo.color || "Padrão",
+                        tamanho: orderData.orderInfo.size || "Único"
                     },
-                    status: "PENDENTE", // Pode virar "PAGO" via Webhook ou Frontend Polling
+                    valorTotal: orderData.totalAmount || 0,
+                    status: "PENDENTE",
                     dataCriacao: serverTimestamp()
                 });
 
