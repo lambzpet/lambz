@@ -38,6 +38,24 @@ async function loadProductsFromFirebase() {
 
         snapshot.forEach(doc => {
             const d = doc.data();
+
+            // Parse colorImages map (Firestore SDK auto-converts)
+            let colorImages = null;
+            if (d.colorImages && typeof d.colorImages === 'object') {
+                colorImages = {};
+                for (const [key, val] of Object.entries(d.colorImages)) {
+                    colorImages[key] = val;
+                }
+            }
+
+            // Parse reviews array (ensure photo field is preserved)
+            const reviews = (d.reviews || []).map(r => ({
+                name: r.name || '',
+                rating: parseInt(r.rating) || 5,
+                text: r.text || '',
+                ...(r.photo ? { photo: r.photo } : {})
+            }));
+
             firebaseProducts.push({
                 id: doc.id,
                 name: d.name || "Sem Nome",
@@ -45,13 +63,14 @@ async function loadProductsFromFirebase() {
                 oldPrice: parseInt(d.oldPrice) || 0,
                 image: d.image || "",
                 images: d.images || [d.image || ""],
+                colorImages,
                 description: d.description || "",
-                rating: parseFloat(d.rating) || 5.0,
+                rating: parseFloat(d.rating) || 4.9,
                 reviewCount: parseInt(d.reviewCount) || 0,
                 badge: d.badge || null,
                 colors: d.colors || [],
                 sizes: d.sizes || null,
-                reviews: d.reviews || []
+                reviews
             });
         });
 

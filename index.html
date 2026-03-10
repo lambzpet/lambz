@@ -88,71 +88,11 @@
         </div>
     </div>
 
-    <!-- Products Grid -->
+    <!-- Products Grid (populated dynamically from LAMBZ_PRODUCTS) -->
     <section id="produtos" class="products">
         <div class="container">
-            <div class="grid">
-
-                <!-- Product 1 — Garrafa Portátil Pet -->
-                <a href="produto.html?id=garrafa-portatil-pet" class="product-card">
-                    <div class="product-image">
-                        <img src="https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-hero.jpg"
-                            alt="Garrafa de Água Portátil Pet">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Garrafa de Água Portátil Pet</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 379,90</span>
-                            <span class="price-old">R$ 599,90</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Product 2 -->
-                <a href="produto.html?id=coleira-conforto" class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Coleira Ergonômica">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Coleira Peitoral Conforto</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 89,90</span>
-                            <span class="price-old">R$ 159,90</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Product 3 -->
-                <a href="produto.html?id=bebedouro-zen" class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Bebedouro Inteligente">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Bebedouro Fonte Zen</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 179,90</span>
-                            <span class="price-old">R$ 249,90</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Product 4 -->
-                <a href="produto.html?id=escova-pelos" class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1628009559385-484bd7480a40?auto=format&fit=crop&q=80&w=400&h=400"
-                            alt="Kit Escova">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Luva e Escova de Pelos</h3>
-                        <div class="product-price-row">
-                            <span class="price-current">R$ 49,90</span>
-                            <span class="price-old">R$ 99,90</span>
-                        </div>
-                    </div>
-                </a>
-
+            <div class="grid" id="product-grid">
+                <!-- Products are rendered dynamically by renderProductGrid() -->
             </div>
 
             <div style="text-align: center; margin-top: 48px;">
@@ -206,13 +146,14 @@
             renderProductGrid();
         };
 
-        // Renderiza a grid de produtos (chamado no load e após Firebase)
+        // Renderiza a grid de produtos dinamicamente
         function renderProductGrid() {
-            const grid = document.querySelector('.grid');
+            const grid = document.getElementById('product-grid');
             if (!grid) return;
-
-            // Guard: don't wipe static cards if data is missing
-            if (typeof LAMBZ_PRODUCTS === 'undefined' || !LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) return;
+            if (typeof LAMBZ_PRODUCTS === 'undefined' || !LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) {
+                grid.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">Carregando produtos...</p>';
+                return;
+            }
 
             grid.innerHTML = LAMBZ_PRODUCTS.map(p => `
                 <a href="produto.html?id=${p.id}" class="product-card">
