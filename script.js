@@ -16,19 +16,161 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    // Dynamic Cart Badge
+    // Dynamic Cart Badge & Cart Drawer System
+    window.getCartData = function () {
+        const data = localStorage.getItem("lambz_cart");
+        let cart = data ? JSON.parse(data) : [];
+        // Migration from old single-item checkout flow if existing
+        if (!Array.isArray(cart)) {
+            cart = [cart];
+            localStorage.setItem("lambz_cart", JSON.stringify(cart));
+        }
+        return cart;
+    };
+
     window.updateCartBadge = function () {
-        // Support multiple badges on screen (desktop/mobile layout)
         const badges = document.querySelectorAll('.cart-badge');
-        const data = localStorage.getItem("lambz_checkout");
+        const cart = window.getCartData();
+        const totalItems = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+
         badges.forEach(badge => {
-            if (data) {
-                badge.textContent = '1';
+            if (totalItems > 0) {
+                badge.textContent = totalItems > 99 ? '99+' : totalItems;
                 badge.style.display = 'flex';
             } else {
                 badge.style.display = 'none';
             }
         });
+
+        if (window.renderCartDrawer) window.renderCartDrawer();
+    };
+
+    // Inject Modern Sliding Cart Drawer globally
+    function initCartDrawer() {
+        if (document.getElementById('lambz-cart-drawer')) return;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'lambz-cart-overlay';
+        overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:9998;opacity:0;visibility:hidden;transition:all 0.3s ease;backdrop-filter:blur(2px);';
+
+        const drawer = document.createElement('div');
+        drawer.id = 'lambz-cart-drawer';
+        drawer.style.cssText = 'position:fixed;top:0;right:-400px;width:100%;max-width:400px;height:100vh;background:#fff;z-index:9999;transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);display:flex;flex-direction:column;box-shadow:-5px 0 25px rgba(0,0,0,0.1);';
+
+        drawer.innerHTML = `
+            <div style="padding:20px 24px;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center;background:#fff;">
+                <h2 style="margin:0;font-size:1.2rem;color:#0f172a;display:flex;align-items:center;gap:10px;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    Seu Carrinho
+                </h2>
+                <button onclick="window.closeCart()" style="background:none;border:none;font-size:1.5rem;color:#64748b;cursor:pointer;padding:4px;"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            <div id="lambz-cart-items" style="flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px;"></div>
+            <div id="lambz-cart-footer" style="padding:24px;background:#f8fafc;border-top:1px solid #e2e8f0;"></div>
+        `;
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(drawer);
+
+        overlay.addEventListener('click', window.closeCart);
+    }
+
+    const formatPriceDrawer = (cents) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cents / 100);
+
+    window.openCart = function () {
+        initCartDrawer();
+        window.renderCartDrawer();
+        document.getElementById('lambz-cart-overlay').style.visibility = 'visible';
+        document.getElementById('lambz-cart-overlay').style.opacity = '1';
+        document.getElementById('lambz-cart-drawer').style.right = '0';
+        document.body.style.overflow = 'hidden';
+    };
+
+    window.closeCart = function () {
+        const overlay = document.getElementById('lambz-cart-overlay');
+        const drawer = document.getElementById('lambz-cart-drawer');
+        if (overlay) { overlay.style.opacity = '0'; overlay.style.visibility = 'hidden'; }
+        if (drawer) drawer.style.right = '-400px';
+        document.body.style.overflow = '';
+    };
+
+    window.removeFromCart = function (index) {
+        let cart = window.getCartData();
+        cart.splice(index, 1);
+        localStorage.setItem('lambz_cart', JSON.stringify(cart));
+        window.updateCartBadge();
+    };
+
+    window.changeCartQty = function (index, delta) {
+        let cart = window.getCartData();
+        if (cart[index]) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            localStorage.setItem('lambz_cart', JSON.stringify(cart));
+            window.updateCartBadge();
+        }
+    };
+
+    window.renderCartDrawer = function () {
+        const itemsContainer = document.getElementById('lambz-cart-items');
+        const footer = document.getElementById('lambz-cart-footer');
+        if (!itemsContainer) return;
+
+        const cart = window.getCartData();
+
+        if (cart.length === 0) {
+            itemsContainer.innerHTML = `<div style="text-align:center;margin:auto;color:#94a3b8;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                <div style="font-size:1.1rem;color:#475569;font-weight:600;">Seu carrinho está vazio</div>
+                <div style="font-size:0.9rem;">Adicione produtos para continuar comprando.</div>
+                <button onclick="window.closeCart(); window.location.href='produtos.html';" style="margin-top:16px;background:#059669;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;">Ver Produtos</button>
+            </div>`;
+            footer.style.display = 'none';
+            return;
+        }
+
+        let totalCents = 0;
+
+        itemsContainer.innerHTML = cart.map((item, i) => {
+            const itemTotal = item.price * (item.qty || 1);
+            totalCents += itemTotal;
+            const details = [item.color, item.size].filter(Boolean).join(' · ');
+
+            return `<div style="display:flex;gap:16px;background:#fff;padding-bottom:16px;border-bottom:1px solid #f1f5f9;">
+                <img src="${item.image}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;background:#f8fafc;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22/>'">
+                <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;">
+                    <div>
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                            <h4 style="margin:0;font-size:0.95rem;color:#0f172a;line-height:1.3;font-weight:600;">${item.name}</h4>
+                            <button onclick="window.removeFromCart(${i})" style="background:none;border:none;color:#94a3b8;cursor:pointer;padding:0;display:flex;align-items:center;"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                        ${details ? `<div style="font-size:0.75rem;color:#64748b;margin-top:4px;">${details}</div>` : ''}
+                    </div>
+                    
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+                        <div style="display:flex;align-items:center;border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;background:#fff;">
+                            <button onclick="window.changeCartQty(${i}, -1)" style="width:28px;height:28px;background:none;border:none;color:#475569;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:300;">-</button>
+                            <span style="font-size:0.85rem;color:#0f172a;width:24px;text-align:center;font-weight:600;">${item.qty}</span>
+                            <button onclick="window.changeCartQty(${i}, 1)" style="width:28px;height:28px;background:none;border:none;color:#475569;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:300;">+</button>
+                        </div>
+                        <span style="font-weight:700;color:#059669;font-size:1rem;">${formatPriceDrawer(itemTotal)}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        footer.style.display = 'block';
+        footer.innerHTML = `
+            <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:1.1rem;color:#0f172a;">
+                <span style="font-weight:600;">Subtotal</span>
+                <span style="font-weight:800;">${formatPriceDrawer(totalCents)}</span>
+            </div>
+            <p style="font-size:0.8rem;color:#64748b;margin-top:0;margin-bottom:16px;text-align:center;">Frete e descontos calculados no checkout.</p>
+            <button onclick="window.location.href='checkout.html'" style="display:block;width:100%;padding:16px;background:#059669;color:white;text-align:center;border-radius:8px;font-weight:700;font-size:1.1rem;border:none;cursor:pointer;box-shadow:0 4px 6px -1px rgba(5,150,105,0.3);transition:transform 0.1s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">
+                Finalizar Compra <span style="font-weight:400;margin:0 8px;">—</span> ${formatPriceDrawer(totalCents)}
+            </button>
+            <button onclick="window.closeCart()" style="display:block;width:100%;margin-top:12px;padding:12px;background:none;border:none;color:#64748b;font-size:0.9rem;font-weight:600;cursor:pointer;">Continuar Comprando</button>
+        `;
     };
 
     window.updateCartBadge();
@@ -125,16 +267,27 @@ async function generatePix() {
     }
 
     // Dados do carrinho
-    const cartData = typeof getCheckoutData === 'function' ? getCheckoutData() : null;
-    const orderData = cartData || {
-        name: "Produto Fallback",
-        price: 14990,
-        qty: 1
-    };
+    let cartData = typeof getCheckoutData === 'function' ? getCheckoutData() : [];
+    if (!Array.isArray(cartData)) cartData = [cartData];
 
-    // MODO TESTE: R$ 1,00 — trocar pra valor real quando for ao vivo
-    const TEST_MODE = true;
-    const totalAmount = TEST_MODE ? 1.00 : (orderData.price / 100) * orderData.qty;
+    if (cartData.length === 0) {
+        cartData = [{
+            name: "Produto Fallback",
+            price: 14990,
+            qty: 1
+        }];
+    }
+
+    let sumCents = 0;
+    let descriptionNames = [];
+    cartData.forEach(item => {
+        sumCents += (item.price * (item.qty || 1));
+        descriptionNames.push(item.name);
+    });
+
+    const TEST_MODE = true; // MODO TESTE
+    const totalAmount = TEST_MODE ? 1.00 : (sumCents / 100);
+    const orderData = cartData;
 
     const btn = document.querySelector('button[onclick="generatePix()"]');
     const originalText = btn.innerHTML;
@@ -153,7 +306,7 @@ async function generatePix() {
             },
             body: JSON.stringify({
                 transaction_amount: Number(totalAmount.toFixed(2)),
-                description: `Lambz - ${orderData.name}`,
+                description: `Lambz - ${descriptionNames.join(', ')}`.substring(0, 250),
                 payment_method_id: "pix",
                 notification_url: webhookUrl,
                 payer: {
@@ -208,7 +361,7 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
     if (!checkoutWrapper) return;
 
     checkoutWrapper.innerHTML = `
-        <div class="checkout-modal-card">
+                < div class="checkout-modal-card" >
             <div style="width: 64px; height: 64px; background: #eff6ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote"><rect width="20" height="12" x="2" y="6" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg>
             </div>
@@ -254,7 +407,7 @@ function showPixModal_MP(payload, qrCodeBase64, amount, expectedData, email, tra
                 }
             </style>
         </div>
-    `;
+            `;
 
     checkoutWrapper.style.display = 'block';
 

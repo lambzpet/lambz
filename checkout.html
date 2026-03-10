@@ -212,7 +212,7 @@
         (function loadCheckout() {
             const data = getCheckoutData();
 
-            if (!data) {
+            if (!data || data.length === 0) {
                 // Carrinho Vazio!
                 const wrapper = document.querySelector('.checkout-wrapper');
                 if (wrapper) {
@@ -234,20 +234,31 @@
             populateSummary(data);
         })();
 
-        function populateSummary(data) {
-            const total = data.price * data.qty;
-            const details = [
-                data.color,
-                data.size
-            ].filter(Boolean).join(' · ');
+        function populateSummary(dataArray) {
+            let total = 0;
+            const container = document.getElementById('checkout-product');
+            container.innerHTML = '';
 
-            document.getElementById('checkout-product').innerHTML = `
-                <img src="${data.image}" style="border-radius: var(--radius-sm); width: 80px; height: 80px; object-fit: cover;" alt="Produto">
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <h4 style="font-size: 1rem; margin-bottom: 4px;">${data.name}</h4>
-                    <span style="color: var(--text-muted); font-size: 0.85rem;">Qtd: ${data.qty}${details ? ' · ' + details : ''}</span>
-                </div>
-            `;
+            dataArray.forEach(data => {
+                const itemTotal = data.price * (data.qty || 1);
+                total += itemTotal;
+
+                const details = [
+                    data.color,
+                    data.size
+                ].filter(Boolean).join(' · ');
+
+                container.innerHTML += `
+                    <div style="display: flex; gap: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                        <img src="${data.image}" style="border-radius: var(--radius-sm); width: 80px; height: 80px; object-fit: cover;" alt="Produto">
+                        <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                            <h4 style="font-size: 1rem; margin-bottom: 4px;">${data.name}</h4>
+                            <span style="color: var(--text-muted); font-size: 0.85rem;">Qtd: ${data.qty}${details ? ' · ' + details : ''}</span>
+                            <span style="font-weight: 700; color: var(--action-color); display: block; margin-top: 4px;">${formatPrice(itemTotal)}</span>
+                        </div>
+                    </div>
+                `;
+            });
 
             document.getElementById('checkout-subtotal').textContent = formatPrice(total);
             document.getElementById('checkout-total').textContent = formatPrice(total);
@@ -292,7 +303,15 @@
                         numero: orderData.numero || "",
                         complemento: orderData.complemento || ""
                     },
-                    produto: {
+                    produtos: Array.isArray(orderData.orderInfo) ? orderData.orderInfo.map(info => ({
+                        id: info.id || "desconhecido",
+                        nome: info.name || "N/D",
+                        preco: info.price || 0,
+                        imagem: info.image || "",
+                        quantidade: info.qty || 1,
+                        cor: info.color || "Padrão",
+                        tamanho: info.size || "Único"
+                    })) : [{
                         id: orderData.orderInfo.id || "desconhecido",
                         nome: orderData.orderInfo.name || "N/D",
                         preco: orderData.orderInfo.price || 0,
@@ -300,7 +319,7 @@
                         quantidade: orderData.orderInfo.qty || 1,
                         cor: orderData.orderInfo.color || "Padrão",
                         tamanho: orderData.orderInfo.size || "Único"
-                    },
+                    }],
                     valorTotal: orderData.totalAmount || 0,
                     status: "PENDENTE",
                     dataCriacao: serverTimestamp()

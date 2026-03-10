@@ -153,18 +153,17 @@ function generateStars(rating) {
     return html;
 }
 
-/** Salva produto escolhido no localStorage para o checkout ler */
-function saveToCheckout(productId, qty, color, size) {
+/** Salva produto escolhido no carrinho */
+window.addToCart = function (productId, qty, color, size) {
     const product = getProductById(productId);
     if (!product) return;
 
-    // Preço dinâmico por tamanho (se disponível)
     let finalPrice = product.price;
     if (size && product.sizePrices && product.sizePrices[size]) {
         finalPrice = product.sizePrices[size].price;
     }
 
-    const checkoutData = {
+    const newItem = {
         id: product.id,
         name: product.name,
         price: finalPrice,
@@ -174,11 +173,23 @@ function saveToCheckout(productId, qty, color, size) {
         size: size || (product.sizes ? product.sizes[0] : null)
     };
 
-    localStorage.setItem("lambz_checkout", JSON.stringify(checkoutData));
-}
+    let cart = window.getCartData ? window.getCartData() : [];
 
-/** Lê dados do checkout do localStorage */
+    // Check if item already exists with exact same variations
+    const existingIndex = cart.findIndex(item => item.id === newItem.id && item.color === newItem.color && item.size === newItem.size);
+    if (existingIndex > -1) {
+        cart[existingIndex].qty += newItem.qty;
+    } else {
+        cart.push(newItem);
+    }
+
+    localStorage.setItem("lambz_cart", JSON.stringify(cart));
+
+    if (window.updateCartBadge) window.updateCartBadge();
+    if (window.openCart) window.openCart();
+};
+
+/** Lê dados do cart para compatibilidade antiga se algo precisar */
 function getCheckoutData() {
-    const data = localStorage.getItem("lambz_checkout");
-    return data ? JSON.parse(data) : null;
+    return window.getCartData ? window.getCartData() : [];
 }
