@@ -33,16 +33,17 @@ window.LAMBZ_PRODUCTS = [
         image: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-hero.jpg",
         images: [
             "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-hero.jpg",
-            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-verde.jpg",
-            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-rosa.jpg",
-            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-azul.jpg",
             "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-dimensoes.jpg",
             "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-cores.jpg",
-            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-uso-real.jpg",
-            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-mao.jpg",
             "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-detalhe.jpg",
             "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-bandeja.jpg"
         ],
+        // Imagem de cada cor — troca a foto ao selecionar
+        colorImages: {
+            "Verde": "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-verde.jpg",
+            "Rosa": "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-rosa.jpg",
+            "Azul": "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-azul.jpg"
+        },
         description: "Leve água fresca pro seu pet em qualquer passeio. Garrafa portátil de 800ml com bandeja dobrável de silicone — basta apertar o botão e a água sobe. Material ABS + TPR resistente, leve e fácil de limpar. Alça reforçada com mosquetão. Ideal para viagens, caminhadas e parques.",
         rating: 4.9,
         reviewCount: 347,
@@ -54,13 +55,15 @@ window.LAMBZ_PRODUCTS = [
                 name: "Carlos M.",
                 avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100",
                 rating: 5,
-                text: "Ótima garrafa, grande e convincente. Meu cachorro amou e agora levo em todo passeio. Muito prática!"
+                text: "Ótima garrafa, grande e convincente. Meu cachorro amou e agora levo em todo passeio. Muito prática!",
+                photo: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-uso-real.jpg"
             },
             {
                 name: "Beatriz L.",
                 avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100",
                 rating: 5,
-                text: "Boa qualidade, conforme descrito. A bandeja dobrável é muito inteligente, cabe na bolsa tranquilamente."
+                text: "Boa qualidade, conforme descrito. A bandeja dobrável é muito inteligente, cabe na bolsa tranquilamente.",
+                photo: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-mao.jpg"
             },
             {
                 name: "Ricardo F.",
