@@ -52,22 +52,19 @@ window.LAMBZ_PRODUCTS = [
         sizes: null,
         reviews: [
             {
-                name: "Carlos M.",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100",
+                name: "Carol Mendes",
                 rating: 5,
                 text: "Ótima garrafa, grande e convincente. Meu cachorro amou e agora levo em todo passeio. Muito prática!",
                 photo: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-uso-real.jpg"
             },
             {
-                name: "Beatriz L.",
-                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100",
+                name: "Bia Ferreira",
                 rating: 5,
                 text: "Boa qualidade, conforme descrito. A bandeja dobrável é muito inteligente, cabe na bolsa tranquilamente.",
                 photo: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-mao.jpg"
             },
             {
-                name: "Ricardo F.",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100&h=100",
+                name: "Rafa Oliveira",
                 rating: 5,
                 text: "Comprei pra usar nas trilhas com minha Golden e funcionou perfeito. Não vaza nada. Super recomendo!"
             }

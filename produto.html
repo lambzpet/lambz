@@ -35,6 +35,42 @@
             cursor: zoom-in;
         }
 
+        .gallery-wrapper {
+            position: relative;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #e5e5e5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #333;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .gallery-nav:hover {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .gallery-nav.prev {
+            left: 10px;
+        }
+
+        .gallery-nav.next {
+            right: 10px;
+        }
+
         .gallery-thumbs {
             display: flex;
             gap: 8px;
@@ -47,7 +83,8 @@
             width: 64px;
             height: 64px;
             border-radius: 8px;
-            object-fit: cover;
+            object-fit: contain;
+            background: #f8f8f8;
             cursor: pointer;
             border: 2px solid transparent;
             opacity: 0.6;
@@ -70,6 +107,20 @@
             border-radius: 8px;
             margin-top: 12px;
             object-fit: cover;
+        }
+
+        .review-avatar-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #64748b;
+            flex-shrink: 0;
         }
 
         /* Color swatches (AliExpress style) */
@@ -467,14 +518,16 @@
         <div class="container">
             <div class="product-layout">
                 <div class="product-gallery">
-                    <img id="product-main-img" class="main-img" src="" alt="">
+                    <div class="gallery-wrapper">
+                        <button class="gallery-nav prev" onclick="galleryNav(-1)">&#8249;</button>
+                        <img id="product-main-img" class="main-img" src="" alt="">
+                        <button class="gallery-nav next" onclick="galleryNav(1)">&#8250;</button>
+                    </div>
                     <div class="gallery-thumbs" id="gallery-thumbs"></div>
                 </div>
                 <div class="product-details">
                     <div class="detail-rating" id="product-rating"></div>
                     <h1 id="product-name"></h1>
-                    <p id="product-description" style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
-                    </p>
                     <div class="detail-price" id="product-price-area"></div>
 
                     <!-- Options populated by JS -->
@@ -490,6 +543,9 @@
                             <button class="qty-btn" onclick="changeQty(1)">+</button>
                         </div>
                     </div>
+
+                    <p id="product-description" style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    </p>
 
                     <!-- CTA -->
                     <div class="cta-section" style="gap: 12px;">
@@ -590,10 +646,10 @@
                 thumbsContainer.innerHTML = '';
             }
 
-            // Rating
+            // Rating (só estrelas)
             const ratingEl = document.getElementById('product-rating');
             ratingEl.innerHTML = generateStars(p.rating) +
-                '<span style="margin-left: 4px;">' + p.rating.toFixed(1) + ' (' + p.reviewCount + ' avaliações)</span>';
+                '<span style="margin-left: 4px;">' + p.rating.toFixed(1) + '</span>';
 
             // Nome e descrição
             document.getElementById('product-name').textContent = p.name;
@@ -649,6 +705,20 @@
             document.getElementById('product-main-img').src = imgUrl;
             document.querySelectorAll('.gallery-thumbs img').forEach(t => t.classList.remove('active'));
             thumbEl.classList.add('active');
+            // Update gallery index
+            const allThumbs = document.querySelectorAll('.gallery-thumbs img');
+            allThumbs.forEach((t, i) => { if (t === thumbEl) galleryIndex = i; });
+        }
+
+        // Gallery arrow navigation
+        let galleryIndex = 0;
+        function galleryNav(dir) {
+            const allImages = currentProduct.images || [];
+            if (allImages.length < 2) return;
+            galleryIndex = (galleryIndex + dir + allImages.length) % allImages.length;
+            document.getElementById('product-main-img').src = allImages[galleryIndex];
+            const thumbs = document.querySelectorAll('.gallery-thumbs img');
+            thumbs.forEach((t, i) => t.classList.toggle('active', i === galleryIndex));
         }
 
         function renderReviews() {
@@ -658,10 +728,12 @@
                 return;
             }
 
-            grid.innerHTML = currentProduct.reviews.map(r => `
+            grid.innerHTML = currentProduct.reviews.map(r => {
+                const initials = r.name.split(' ').map(w => w[0]).join('').toUpperCase();
+                return `
                 <div class="review-card">
                     <div class="review-header">
-                        <img class="review-avatar" src="${r.avatar}" alt="${r.name}">
+                        <div class="review-avatar-icon">${initials}</div>
                         <div>
                             <div style="font-weight: 700;">${r.name}</div>
                             <div class="review-verified">✓ Compra Verificada</div>
@@ -672,8 +744,8 @@
                     </div>
                     <p style="color: var(--text-muted); line-height: 1.6;">"${r.text}"</p>
                     ${r.photo ? '<img class="review-photo" src="' + r.photo + '" alt="Foto do cliente">' : ''}
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
         // ── Interações ──
