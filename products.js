@@ -25,38 +25,46 @@
 
 window.LAMBZ_PRODUCTS = [
     {
-        id: "cama-nuvem",
-        name: "Cama Terapêutica Nuvem",
-        price: 14990,
-        oldPrice: 29990,
-        image: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=800&h=800",
+        id: "garrafa-portatil-pet",
+        name: "Garrafa de Água Portátil Pet",
+        price: 37990,
+        oldPrice: 59990,
+        // TROCAR: substituir pelas URLs do Supabase quando hospedar
+        image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
         images: [
-            "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=800&h=800"
+            // TROCAR: IMG-20260310-WA0029.jpg (foto principal com cachorro + 3 cores)
+            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
+            // TROCAR: IMG-20260310-WA0028.jpg (garrafa verde)
+            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
+            // TROCAR: IMG-20260310-WA0027.jpg (garrafa rosa)
+            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
+            // TROCAR: IMG-20260310-WA0032.jpg (garrafa azul)
+            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800"
         ],
-        description: "Feita com espuma viscoelástica de alta densidade que se molda ao corpo do seu pet, aliviando a pressão nas articulações. Revestimento anti-pelos removível e lavável. Conforto absoluto.",
-        rating: 5.0,
-        reviewCount: 428,
-        badge: "Mais Vendido",
-        colors: ["Cinza Nuvem", "Bege Areia", "Rosa Blush"],
-        sizes: ["P (até 8kg)", "M (até 18kg)", "G (até 35kg)"],
+        description: "Leve água fresca pro seu pet em qualquer passeio. Garrafa portátil de 800ml com bandeja dobrável de silicone — basta apertar o botão e a água sobe. Material ABS + TPR resistente, leve e fácil de limpar. Alça reforçada com mosquetão. Ideal para viagens, caminhadas e parques.",
+        rating: 4.9,
+        reviewCount: 347,
+        badge: null,
+        colors: ["Verde", "Rosa", "Azul"],
+        sizes: null,
         reviews: [
             {
-                name: "Marcela S.",
-                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100",
-                rating: 5,
-                text: "Finalmente encontrei uma cama que realmente dura e que meu cachorro amou na hora. O acabamento é muito diferente das antigas que eu comprava. Vale cada centavo!"
-            },
-            {
-                name: "Lucas R.",
+                name: "Carlos M.",
                 avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100&h=100",
                 rating: 5,
-                text: "Surreal a qualidade. Minha Golden de 28kg dorme nessa cama e ela não deformou em nada depois de meses. Recomendo demais a Lambz."
+                text: "Ótima garrafa, grande e convincente. Meu cachorro amou e agora levo em todo passeio. Muito prática!"
             },
             {
-                name: "Ana P.",
+                name: "Beatriz L.",
+                avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100",
+                rating: 5,
+                text: "Boa qualidade, conforme descrito. A bandeja dobrável é muito inteligente, cabe na bolsa tranquilamente."
+            },
+            {
+                name: "Ricardo F.",
                 avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100&h=100",
                 rating: 5,
-                text: "Chegou super rápido e muito bem embalado. Minha gata não sai mais de cima. Já é o segundo produto que compro da Lambz, virei fã!"
+                text: "Comprei pra usar nas trilhas com minha Golden e funcionou perfeito. Não vaza nada. Super recomendo!"
             }
         ]
     },

@@ -502,31 +502,143 @@
                 <div style="border-top: 2px dashed #e2e8f0; margin: 32px 0;"></div>
 
                 <h3 style="margin-bottom: 16px; color: #1e293b; font-size: 1.2rem;">
-                    <i class="fas fa-plus-circle" style="color:#059669;"></i> Cadastrar Novo Produto no Firebase
+                    <i class="fas fa-plus-circle" style="color:#059669;"></i> Cadastrar / Editar Produto
                 </h3>
                 <div class="product-form-card" id="productFormCard">
-                    <div class="form-grid">
-                        <div><label>Nome do Produto *</label><input type="text" id="prod-name"
-                                placeholder="Ex: Lambz Classic"></div>
-                        <div><label>Preço (centavos, ex: 14990) *</label><input type="number" id="prod-price"
-                                placeholder="14990"></div>
-                        <div><label>Preço Antigo (centavos)</label><input type="number" id="prod-old-price"
-                                placeholder="29990"></div>
-                        <div><label>URL da Imagem Principal *</label><input type="text" id="prod-image"
-                                placeholder="https://i.imgur.com/..."></div>
-                        <div><label>Cores (separadas por vírgula)</label><input type="text" id="prod-colors"
-                                placeholder="Branco, Preto, Azul"></div>
-                        <div><label>Tamanhos (separados por vírgula)</label><input type="text" id="prod-sizes"
-                                placeholder="P, M, G"></div>
+
+                    <!-- Row 1: Nome + Slug preview -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                            Nome do Produto <span style="color:#ef4444">*</span>
+                        </label>
+                        <input type="text" id="prod-name" placeholder="Ex: Garrafa de Água Portátil Pet"
+                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                            oninput="updateSlugPreview()">
+                        <div id="slug-preview" style="font-size:0.78rem;color:#94a3b8;margin-top:4px;">
+                            <i class="fas fa-link"></i> URL: produto.html?id=<span id="slug-text">...</span>
+                        </div>
+                        <span style="font-size:0.72rem;color:#94a3b8;">→ Aparece no card, na página do produto, e no
+                            checkout</span>
                     </div>
-                    <div style="margin-top: 16px;">
-                        <label>Descrição</label>
-                        <textarea id="prod-desc" rows="2"
-                            style="width:100%; padding:12px; border:1px solid #d4d4d8; border-radius:8px; font-family:inherit; font-size:0.95rem;"
-                            placeholder="Descrição do produto..."></textarea>
+
+                    <!-- Row 2: Preços -->
+                    <div class="form-grid" style="margin-bottom: 16px;">
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Preço de Venda (R$) <span style="color:#ef4444">*</span>
+                            </label>
+                            <input type="text" id="prod-price" placeholder="379,90"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                                oninput="formatPriceInput(this)">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Preço exibido no card e na página do
+                                produto</span>
+                        </div>
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Preço Antigo (R$) <small style="color:#94a3b8">de → por</small>
+                            </label>
+                            <input type="text" id="prod-old-price" placeholder="599,90"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                                oninput="formatPriceInput(this)">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Aparece riscado ao lado do preço atual
+                                (deixe vazio se não tiver)</span>
+                        </div>
                     </div>
+
+                    <!-- Row 3: Imagem principal + Preview -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                            URL da Imagem Principal <span style="color:#ef4444">*</span>
+                        </label>
+                        <div style="display:flex;gap:12px;align-items:start;">
+                            <div style="flex:1;">
+                                <input type="text" id="prod-image" placeholder="https://supabase.co/.../foto.jpg"
+                                    style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                                    oninput="updateImagePreview()">
+                                <span style="font-size:0.72rem;color:#94a3b8;">→ Foto do card na home, catálogo, e foto
+                                    principal na página do produto</span>
+                            </div>
+                            <div id="img-preview"
+                                style="width:80px;height:80px;border-radius:8px;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f8fafc;">
+                                <i class="fas fa-image" style="color:#cbd5e1;font-size:1.5rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Galeria -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                            Galeria de Fotos <small style="color:#94a3b8">(1 URL por linha)</small>
+                        </label>
+                        <textarea id="prod-gallery" rows="3"
+                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.85rem;resize:vertical;"
+                            placeholder="https://supabase.co/.../foto1.jpg&#10;https://supabase.co/.../foto2.jpg&#10;https://supabase.co/.../foto3.jpg"></textarea>
+                        <span style="font-size:0.72rem;color:#94a3b8;">→ Fotos extras na página do produto
+                            (galeria)</span>
+                    </div>
+
+                    <!-- Row 5: Cores + Tamanhos -->
+                    <div class="form-grid" style="margin-bottom: 16px;">
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Cores Disponíveis
+                            </label>
+                            <input type="text" id="prod-colors" placeholder="Verde, Rosa, Azul"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Botões de seleção de cor na página do
+                                produto</span>
+                        </div>
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Tamanhos
+                            </label>
+                            <input type="text" id="prod-sizes" placeholder="P, M, G (ou vazio se tamanho único)"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Botões de tamanho na página do produto
+                                (vazio = não aparece)</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 6: Rating + Review Count -->
+                    <div class="form-grid" style="margin-bottom: 16px;">
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Nota (0 a 5)
+                            </label>
+                            <input type="number" id="prod-rating" placeholder="4.9" min="0" max="5" step="0.1"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Estrelas na página do produto</span>
+                        </div>
+                        <div>
+                            <label
+                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                                Qtd de Avaliações
+                            </label>
+                            <input type="number" id="prod-review-count" placeholder="347"
+                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ "X avaliações" ao lado das estrelas</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 7: Descrição -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                            Descrição do Produto
+                        </label>
+                        <textarea id="prod-desc" rows="4"
+                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;resize:vertical;"
+                            placeholder="Descreva o produto com foco em benefícios para o pet e o dono. Ex: Material, capacidade, diferenciais, uso recomendado..."></textarea>
+                        <span style="font-size:0.72rem;color:#94a3b8;">→ Texto na página do produto, abaixo do
+                            nome</span>
+                    </div>
+
                     <input type="hidden" id="prod-edit-id" value="">
-                    <div style="display:flex; gap:12px; margin-top:20px;">
+                    <div style="display:flex; gap:12px; margin-top:20px; align-items:center;">
                         <button onclick="saveProduct()"
                             style="padding: 14px 32px; background: #059669; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer;"
                             id="btnSaveProduct">
@@ -537,6 +649,9 @@
                             id="btnCancelEdit">
                             Cancelar Edição
                         </button>
+                        <span id="save-feedback" style="color:#059669;font-weight:600;font-size:0.9rem;display:none;">
+                            <i class="fas fa-check-circle"></i> Salvo!
+                        </span>
                     </div>
                 </div>
 
@@ -590,6 +705,54 @@
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabName).classList.add('active');
             btn.classList.add('active');
+        }
+
+        // ========== FORM HELPERS ==========
+
+        // Auto-generate slug from product name
+        function updateSlugPreview() {
+            const name = document.getElementById('prod-name').value;
+            const slug = name
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // remove accents
+                .replace(/[^a-z0-9\s-]/g, '') // remove special chars
+                .trim()
+                .replace(/\s+/g, '-') // spaces to hyphens
+                .replace(/-+/g, '-'); // dedupe hyphens
+            document.getElementById('slug-text').textContent = slug || '...';
+        }
+
+        // Live image preview
+        function updateImagePreview() {
+            const url = document.getElementById('prod-image').value.trim();
+            const box = document.getElementById('img-preview');
+            if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                box.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-exclamation-triangle\\' style=\\'color:#ef4444;font-size:1.2rem;\\'></i>'">`;
+            } else {
+                box.innerHTML = '<i class="fas fa-image" style="color:#cbd5e1;font-size:1.5rem;"></i>';
+            }
+        }
+
+        // Format price input to BRL-like (allow digits and comma)
+        function formatPriceInput(el) {
+            let v = el.value.replace(/[^0-9,]/g, '');
+            // Ensure only one comma
+            const parts = v.split(',');
+            if (parts.length > 2) v = parts[0] + ',' + parts.slice(1).join('');
+            el.value = v;
+        }
+
+        // Convert "379,90" string to 37990 cents
+        function parsePriceToCents(str) {
+            if (!str) return 0;
+            const clean = str.replace(/\./g, '').replace(',', '.');
+            return Math.round(parseFloat(clean) * 100) || 0;
+        }
+
+        // Convert 37990 cents to "379,90" string
+        function centsToDisplay(cents) {
+            if (!cents) return '';
+            return (cents / 100).toFixed(2).replace('.', ',');
         }
     </script>
 
@@ -765,12 +928,18 @@
             if (!p) return;
             document.getElementById('prod-edit-id').value = id;
             document.getElementById('prod-name').value = p.name || '';
-            document.getElementById('prod-price').value = p.price || '';
-            document.getElementById('prod-old-price').value = p.oldPrice || '';
+            document.getElementById('prod-price').value = centsToDisplay(p.price);
+            document.getElementById('prod-old-price').value = centsToDisplay(p.oldPrice);
             document.getElementById('prod-image').value = p.image || '';
+            document.getElementById('prod-gallery').value = (p.images || []).join('\n');
             document.getElementById('prod-colors').value = (p.colors || []).join(', ');
             document.getElementById('prod-sizes').value = (p.sizes || []).join(', ');
+            document.getElementById('prod-rating').value = p.rating || '';
+            document.getElementById('prod-review-count').value = p.reviewCount || '';
             document.getElementById('prod-desc').value = p.description || '';
+
+            updateSlugPreview();
+            updateImagePreview();
 
             document.getElementById('btnSaveProduct').innerHTML = '<i class="fas fa-save"></i> Atualizar Produto';
             document.getElementById('btnCancelEdit').style.display = 'inline-block';
@@ -779,42 +948,81 @@
 
         window.cancelEdit = function () {
             document.getElementById('prod-edit-id').value = '';
-            ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-colors', 'prod-sizes', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
+            ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-gallery', 'prod-colors', 'prod-sizes', 'prod-rating', 'prod-review-count', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
             document.getElementById('btnSaveProduct').innerHTML = '<i class="fas fa-plus"></i> Salvar Produto';
             document.getElementById('btnCancelEdit').style.display = 'none';
+            document.getElementById('slug-text').textContent = '...';
+            document.getElementById('img-preview').innerHTML = '<i class="fas fa-image" style="color:#cbd5e1;font-size:1.5rem;"></i>';
         };
 
         window.saveProduct = async function () {
-            const name = document.getElementById('prod-name').value;
-            const price = parseInt(document.getElementById('prod-price').value);
-            const image = document.getElementById('prod-image').value;
-            if (!name || isNaN(price) || !image) { alert('Preencha nome, preço (em centavos) e imagem.'); return; }
+            const name = document.getElementById('prod-name').value.trim();
+            const priceStr = document.getElementById('prod-price').value;
+            const image = document.getElementById('prod-image').value.trim();
+
+            if (!name || !priceStr || !image) {
+                alert('Preencha nome, preço e imagem principal.');
+                return;
+            }
+
+            const price = parsePriceToCents(priceStr);
+            const oldPrice = parsePriceToCents(document.getElementById('prod-old-price').value);
+
+            // Gallery: split by newlines, filter empty
+            const galleryRaw = document.getElementById('prod-gallery').value;
+            const images = galleryRaw ? galleryRaw.split('\n').map(u => u.trim()).filter(Boolean) : [image];
 
             const prodData = {
                 name,
                 price,
-                oldPrice: parseInt(document.getElementById('prod-old-price').value) || 0,
+                oldPrice: oldPrice || 0,
                 image,
+                images,
                 colors: document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean),
                 sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean),
+                rating: parseFloat(document.getElementById('prod-rating').value) || 4.9,
+                reviewCount: parseInt(document.getElementById('prod-review-count').value) || 0,
                 description: document.getElementById('prod-desc').value || '',
                 updatedAt: serverTimestamp()
             };
 
             const editId = document.getElementById('prod-edit-id').value;
 
+            // Generate slug ID from name
+            const slugId = name
+                .toLowerCase()
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .trim()
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+
+            const btn = document.getElementById('btnSaveProduct');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+            btn.disabled = true;
+
             try {
                 if (editId) {
                     await setDoc(doc(db, "produtos", editId), prodData, { merge: true });
-                    alert('Produto atualizado!');
                 } else {
                     prodData.createdAt = serverTimestamp();
-                    const id = 'prod-' + Date.now();
-                    await setDoc(doc(db, "produtos", id), prodData);
-                    alert('Produto salvo!');
+                    await setDoc(doc(db, "produtos", slugId), prodData);
                 }
+
+                // Show feedback
+                const feedback = document.getElementById('save-feedback');
+                feedback.style.display = 'inline';
+                setTimeout(() => feedback.style.display = 'none', 3000);
+
                 cancelEdit();
-            } catch (e) { console.error(e); alert('Erro ao salvar produto.'); }
+            } catch (e) {
+                console.error(e);
+                alert('Erro ao salvar produto: ' + e.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
         };
 
         window.deleteProduct = async function (id) {
