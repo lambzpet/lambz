@@ -29,17 +29,19 @@ window.LAMBZ_PRODUCTS = [
         name: "Garrafa de Água Portátil Pet",
         price: 37990,
         oldPrice: 59990,
-        // TROCAR: substituir pelas URLs do Supabase quando hospedar
-        image: "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
+        // Imagens hospedadas no Supabase Storage
+        image: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-hero.jpg",
         images: [
-            // TROCAR: IMG-20260310-WA0029.jpg (foto principal com cachorro + 3 cores)
-            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
-            // TROCAR: IMG-20260310-WA0028.jpg (garrafa verde)
-            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
-            // TROCAR: IMG-20260310-WA0027.jpg (garrafa rosa)
-            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800",
-            // TROCAR: IMG-20260310-WA0032.jpg (garrafa azul)
-            "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?auto=format&fit=crop&q=80&w=800&h=800"
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-hero.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-verde.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-rosa.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-azul.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-dimensoes.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-cores.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-uso-real.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-mao.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-detalhe.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/garrafa-portatil/garrafa-bandeja.jpg"
         ],
         description: "Leve água fresca pro seu pet em qualquer passeio. Garrafa portátil de 800ml com bandeja dobrável de silicone — basta apertar o botão e a água sobe. Material ABS + TPR resistente, leve e fácil de limpar. Alça reforçada com mosquetão. Ideal para viagens, caminhadas e parques.",
         rating: 4.9,
