@@ -145,7 +145,7 @@
             const grid = document.getElementById('produtos-grid');
             if (!grid) return;
 
-            if (!LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) {
+            if (typeof LAMBZ_PRODUCTS === 'undefined' || !LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) {
                 grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1 / -1;">Nenhum produto encontrado.</p>';
                 return;
             }
@@ -156,10 +156,6 @@
                         <img src="${p.image}" alt="${p.name}">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            ${(parseFloat(p.rating) || 5.0).toFixed(1)} (${p.reviewCount || 0} avaliações)
-                        </div>
                         <h3 class="product-title">${p.name}</h3>
                         <div class="product-price-row">
                             <span class="price-current">${formatPrice(p.price)}</span>

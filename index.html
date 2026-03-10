@@ -100,12 +100,6 @@
                             alt="Cama Nuvem Lambz">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 5.0 (428 avaliações)
-                        </div>
                         <h3 class="product-title">Cama Terapêutica Nuvem</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 149,90</span>
@@ -121,12 +115,6 @@
                             alt="Coleira Ergonômica">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.9 (156 avaliações)
-                        </div>
                         <h3 class="product-title">Coleira Peitoral Conforto</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 89,90</span>
@@ -142,12 +130,6 @@
                             alt="Bebedouro Inteligente">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.9 (89 avaliações)
-                        </div>
                         <h3 class="product-title">Bebedouro Fonte Zen</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 179,90</span>
@@ -163,12 +145,6 @@
                             alt="Kit Escova">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                            </svg> 4.8 (210 avaliações)
-                        </div>
                         <h3 class="product-title">Luva e Escova de Pelos</h3>
                         <div class="product-price-row">
                             <span class="price-current">R$ 49,90</span>
@@ -222,6 +198,7 @@
         </div>
     </footer>
 
+    <script src="products.js"></script>
     <script src="script.js"></script>
     <script>
         // Callback que o firebase-products.js chama após carregar
@@ -234,16 +211,15 @@
             const grid = document.querySelector('.grid');
             if (!grid) return;
 
+            // Guard: don't wipe static cards if data is missing
+            if (typeof LAMBZ_PRODUCTS === 'undefined' || !LAMBZ_PRODUCTS || LAMBZ_PRODUCTS.length === 0) return;
+
             grid.innerHTML = LAMBZ_PRODUCTS.map(p => `
                 <a href="produto.html?id=${p.id}" class="product-card">
                     <div class="product-image">
                         <img src="${p.image}" alt="${p.name}">
                     </div>
                     <div class="product-info">
-                        <div class="product-rating">
-                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                            ${(p.rating || 5).toFixed(1)} (${p.reviewCount || 0} avaliações)
-                        </div>
                         <h3 class="product-title">${p.name}</h3>
                         <div class="product-price-row">
                             <span class="price-current">${formatPrice(p.price)}</span>
