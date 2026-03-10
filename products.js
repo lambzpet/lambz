@@ -93,6 +93,10 @@ window.LAMBZ_PRODUCTS = [
         badge: "Lançamento",
         colors: ["Preto", "Branco"],
         sizes: ["1 Tigela (2.4/5GHz)", "2 Tigelas (2.4/5GHz)"],
+        sizePrices: {
+            "1 Tigela (2.4/5GHz)": { price: 286990, oldPrice: 399990 },
+            "2 Tigelas (2.4/5GHz)": { price: 332990, oldPrice: 459990 }
+        },
         reviews: [
             {
                 name: "Mariana Costa",
@@ -154,13 +158,19 @@ function saveToCheckout(productId, qty, color, size) {
     const product = getProductById(productId);
     if (!product) return;
 
+    // Preço dinâmico por tamanho (se disponível)
+    let finalPrice = product.price;
+    if (size && product.sizePrices && product.sizePrices[size]) {
+        finalPrice = product.sizePrices[size].price;
+    }
+
     const checkoutData = {
         id: product.id,
         name: product.name,
-        price: product.price,
+        price: finalPrice,
         image: product.image,
         qty: qty || 1,
-        color: color || product.colors[0],
+        color: color || (product.colors ? product.colors[0] : null),
         size: size || (product.sizes ? product.sizes[0] : null)
     };
 

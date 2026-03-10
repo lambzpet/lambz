@@ -685,9 +685,9 @@
             if (p.sizes && p.sizes.length > 0) {
                 selectedSize = p.sizes[0];
                 document.getElementById('size-options').innerHTML =
-                    '<div class="option-group"><label>Tamanho</label><div class="option-buttons">' +
+                    '<div class="option-group"><label>Modelo</label><div class="option-buttons">' +
                     p.sizes.map((s, i) =>
-                        '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickSize(this, \'' + s + '\')">' + s + '</button>'
+                        '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickSize(this, \'' + s.replace(/'/g, "\\'") + '\')">' + s + '</button>'
                     ).join('') +
                     '</div></div>';
             } else {
@@ -763,6 +763,16 @@
             btn.parentElement.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedSize = size;
+
+            // Atualizar preço se o produto tem sizePrices
+            const p = currentProduct;
+            if (p.sizePrices && p.sizePrices[size]) {
+                const sp = p.sizePrices[size];
+                document.getElementById('product-price-area').innerHTML =
+                    '<span class="current">' + formatPrice(sp.price) + '</span>' +
+                    '<span class="old">' + formatPrice(sp.oldPrice) + '</span>' +
+                    '<span class="discount">' + calcDiscount(sp.price, sp.oldPrice) + '</span>';
+            }
         }
 
         function changeQty(delta) {

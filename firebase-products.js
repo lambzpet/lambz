@@ -56,6 +56,18 @@ async function loadProductsFromFirebase() {
                 ...(r.photo ? { photo: r.photo } : {})
             }));
 
+            // Parse sizePrices map
+            let sizePrices = null;
+            if (d.sizePrices && typeof d.sizePrices === 'object') {
+                sizePrices = {};
+                for (const [key, val] of Object.entries(d.sizePrices)) {
+                    sizePrices[key] = {
+                        price: parseInt(val.price) || 0,
+                        oldPrice: parseInt(val.oldPrice) || 0
+                    };
+                }
+            }
+
             firebaseProducts.push({
                 id: doc.id,
                 name: d.name || "Sem Nome",
@@ -70,6 +82,7 @@ async function loadProductsFromFirebase() {
                 badge: d.badge || null,
                 colors: d.colors || [],
                 sizes: d.sizes || null,
+                sizePrices,
                 reviews
             });
         });
