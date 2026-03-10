@@ -61,32 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.target.value = !x[2] ? x[1] : x[1] + '-' + x[2];
         });
     }
-
-    // Modal do Asaas Guide
-    const asaasModal = document.getElementById('asaas-modal');
-    const btnOpenAsaas = document.getElementById('asaas-guide-btn');
-    const btnCloseAsaas = document.getElementById('close-asaas-modal');
-    const btnGotIt = document.getElementById('got-it-btn');
-
-    if (btnOpenAsaas && asaasModal) {
-        btnOpenAsaas.addEventListener('click', () => {
-            asaasModal.classList.add('active');
-        });
-    }
-
-    const closeModal = () => {
-        if (asaasModal) asaasModal.classList.remove('active');
-    };
-
-    if (btnCloseAsaas) btnCloseAsaas.addEventListener('click', closeModal);
-    if (btnGotIt) btnGotIt.addEventListener('click', closeModal);
-    if (asaasModal) {
-        asaasModal.addEventListener('click', (e) => {
-            if (e.target === asaasModal) {
-                closeModal();
-            }
-        });
-    }
 });
 
 function preencherTeste() {
