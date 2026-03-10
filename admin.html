@@ -1185,16 +1185,18 @@
                         body: JSON.stringify({ prefix: '', limit: 200 })
                     });
                     const files = await filesRes.json();
-                    files.forEach(f => {
-                        if (f.name && f.metadata) {
-                            allFiles.push({
-                                folder,
-                                name: f.name,
-                                url: `${SUPABASE_URL}/storage/v1/object/public/lambzbuckets/${folder}/${f.name}`,
-                                size: f.metadata.size || 0
-                            });
-                        }
-                    });
+                    if (!files.error && Array.isArray(files)) {
+                        files.forEach(f => {
+                            if (f.name && f.metadata) {
+                                allFiles.push({
+                                    folder,
+                                    name: f.name,
+                                    url: `${SUPABASE_URL}/storage/v1/object/public/lambzbuckets/${folder}/${f.name}`,
+                                    size: f.metadata.size || 0
+                                });
+                            }
+                        });
+                    }
                 }
 
                 // Also check root files
