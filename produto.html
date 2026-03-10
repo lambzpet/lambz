@@ -29,7 +29,8 @@
             width: 100%;
             border-radius: var(--radius-lg);
             aspect-ratio: 1/1;
-            object-fit: cover;
+            object-fit: contain;
+            background: #f8f8f8;
             box-shadow: var(--shadow-md);
             cursor: zoom-in;
         }
@@ -69,6 +70,51 @@
             border-radius: 8px;
             margin-top: 12px;
             object-fit: cover;
+        }
+
+        /* Color swatches (AliExpress style) */
+        .color-swatches {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-swatch img {
+            width: 52px;
+            height: 52px;
+            border-radius: 8px;
+            border: 2px solid #e5e5e5;
+            object-fit: contain;
+            background: #f8f8f8;
+            display: block;
+            transition: border-color 0.2s;
+        }
+
+        .color-swatch:hover img {
+            border-color: #999;
+        }
+
+        .color-swatch.active img {
+            border-color: var(--text-color);
+        }
+
+        .color-swatch span {
+            font-size: 0.7rem;
+            color: #666;
+            display: block;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .color-swatch.active span {
+            color: var(--text-color);
+            font-weight: 600;
         }
 
         .product-details {
@@ -484,7 +530,7 @@
     <!-- Reviews (populated by JS) -->
     <section class="reviews-section">
         <div class="container">
-            <h2 class="section-title" style="margin-bottom: 40px;">O Que Nossos Clientes Dizem</h2>
+            <h2 class="section-title" style="margin-bottom: 40px;">Avaliações</h2>
             <div id="reviews-grid" class="grid"
                 style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;"></div>
         </div>
@@ -559,15 +605,29 @@
                 '<span class="old">' + formatPrice(p.oldPrice) + '</span>' +
                 '<span class="discount">' + calcDiscount(p.price, p.oldPrice) + '</span>';
 
-            // Cores
+            // Cores — com imagem swatch se disponível
             if (p.colors && p.colors.length > 0) {
                 selectedColor = p.colors[0];
-                document.getElementById('color-options').innerHTML =
-                    '<div class="option-group"><label>Cor</label><div class="option-buttons">' +
-                    p.colors.map((c, i) =>
-                        '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickColor(this, \'' + c + '\')">' + c + '</button>'
-                    ).join('') +
-                    '</div></div>';
+                const hasColorImages = p.colorImages && Object.keys(p.colorImages).length > 0;
+
+                if (hasColorImages) {
+                    document.getElementById('color-options').innerHTML =
+                        '<div class="option-group"><label>Cor</label><div class="color-swatches">' +
+                        p.colors.map((c, i) => {
+                            const imgUrl = p.colorImages[c] || p.image;
+                            return '<div class="color-swatch' + (i === 0 ? ' active' : '') + '" onclick="pickColor(this, \'' + c + '\')">' +
+                                '<img src="' + imgUrl + '" alt="' + c + '">' +
+                                '<span>' + c + '</span></div>';
+                        }).join('') +
+                        '</div></div>';
+                } else {
+                    document.getElementById('color-options').innerHTML =
+                        '<div class="option-group"><label>Cor</label><div class="option-buttons">' +
+                        p.colors.map((c, i) =>
+                            '<button class="option-btn' + (i === 0 ? ' active' : '') + '" onclick="pickColor(this, \'' + c + '\')">' + c + '</button>'
+                        ).join('') +
+                        '</div></div>';
+                }
             }
 
             // Tamanhos
@@ -617,9 +677,11 @@
         }
 
         // ── Interações ──
-        function pickColor(btn, color) {
-            btn.parentElement.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function pickColor(el, color) {
+            // Handle both swatch divs and regular buttons
+            const parent = el.closest('.color-swatches') || el.parentElement;
+            parent.querySelectorAll('.color-swatch, .option-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
             selectedColor = color;
 
             // Switch main image to the color variant if available
