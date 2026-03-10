@@ -467,6 +467,8 @@
                     Lixeira</button>
                 <button class="admin-tab" onclick="switchTab('produtos', this)"><i class="fas fa-box"></i>
                     Produtos</button>
+                <button class="admin-tab" onclick="switchTab('midia', this)"><i class="fas fa-cloud"></i>
+                    Mídia</button>
             </div>
 
             <!-- TAB: PEDIDOS -->
@@ -524,7 +526,7 @@
                 </h3>
                 <div class="product-form-card" id="productFormCard">
 
-                    <!-- Row 1: Nome + Slug preview -->
+                    <!-- Nome + Slug -->
                     <div style="margin-bottom: 16px;">
                         <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
                             Nome do Produto <span style="color:#ef4444">*</span>
@@ -535,22 +537,20 @@
                         <div id="slug-preview" style="font-size:0.78rem;color:#94a3b8;margin-top:4px;">
                             <i class="fas fa-link"></i> URL: produto.html?id=<span id="slug-text">...</span>
                         </div>
-                        <span style="font-size:0.72rem;color:#94a3b8;">→ Aparece no card, na página do produto, e no
-                            checkout</span>
                     </div>
 
-                    <!-- Row 2: Preços -->
+                    <!-- Preço base -->
                     <div class="form-grid" style="margin-bottom: 16px;">
                         <div>
                             <label
                                 style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
-                                Preço de Venda (R$) <span style="color:#ef4444">*</span>
+                                Preço Base (R$) <span style="color:#ef4444">*</span>
                             </label>
                             <input type="text" id="prod-price" placeholder="379,90"
                                 style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
                                 oninput="formatPriceInput(this)">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ Preço exibido no card e na página do
-                                produto</span>
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Preço padrão (usado quando não há variação
+                                por modelo)</span>
                         </div>
                         <div>
                             <label
@@ -560,23 +560,22 @@
                             <input type="text" id="prod-old-price" placeholder="599,90"
                                 style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
                                 oninput="formatPriceInput(this)">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ Aparece riscado ao lado do preço atual
-                                (deixe vazio se não tiver)</span>
+                            <span style="font-size:0.72rem;color:#94a3b8;">→ Riscado ao lado do preço</span>
                         </div>
                     </div>
 
-                    <!-- Row 3: Imagem principal + Preview -->
+                    <!-- ═══ IMAGEM PRINCIPAL (CAPA) ═══ -->
                     <div style="margin-bottom: 16px;">
                         <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
-                            URL da Imagem Principal <span style="color:#ef4444">*</span>
+                            📸 Imagem de Capa <span style="color:#ef4444">*</span>
                         </label>
                         <div style="display:flex;gap:12px;align-items:start;">
                             <div style="flex:1;">
                                 <input type="text" id="prod-image" placeholder="https://supabase.co/.../foto.jpg"
                                     style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
                                     oninput="updateImagePreview()">
-                                <span style="font-size:0.72rem;color:#94a3b8;">→ Foto do card na home, catálogo, e foto
-                                    principal na página do produto</span>
+                                <span style="font-size:0.72rem;color:#94a3b8;">→ Card na home + foto principal na
+                                    página</span>
                             </div>
                             <div id="img-preview"
                                 style="width:80px;height:80px;border-radius:8px;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;background:#f8fafc;">
@@ -585,43 +584,50 @@
                         </div>
                     </div>
 
-                    <!-- Row 4: Galeria -->
+                    <!-- ═══ GALERIA VISUAL ═══ -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:8px;">
+                            🖼️ Galeria de Fotos <small style="color:#94a3b8">(thumbnails no produto)</small>
+                        </label>
+                        <div id="gallery-preview"
+                            style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;min-height:60px;"></div>
+                        <div style="display:flex;gap:8px;">
+                            <input type="text" id="gallery-new-url" placeholder="Cole a URL da imagem aqui..."
+                                style="flex:1;padding:10px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.85rem;">
+                            <button onclick="addGalleryImage()"
+                                style="padding:10px 16px;background:#059669;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;white-space:nowrap;">
+                                <i class="fas fa-plus"></i> Adicionar
+                            </button>
+                        </div>
+                        <input type="hidden" id="prod-gallery" value="">
+                    </div>
+
+                    <!-- ═══ CORES + IMAGENS DE COR ═══ -->
                     <div style="margin-bottom: 16px;">
                         <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
-                            Galeria de Fotos <small style="color:#94a3b8">(1 URL por linha)</small>
+                            🎨 Cores Disponíveis
                         </label>
-                        <textarea id="prod-gallery" rows="3"
-                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.85rem;resize:vertical;"
-                            placeholder="https://supabase.co/.../foto1.jpg&#10;https://supabase.co/.../foto2.jpg&#10;https://supabase.co/.../foto3.jpg"></textarea>
-                        <span style="font-size:0.72rem;color:#94a3b8;">→ Fotos extras na página do produto
-                            (galeria)</span>
+                        <input type="text" id="prod-colors" placeholder="Verde, Rosa, Azul"
+                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                            oninput="updateColorImageFields()">
+                        <span style="font-size:0.72rem;color:#94a3b8;">→ Swatches de seleção (separe por vírgula)</span>
+                        <div id="color-images-container" style="margin-top:10px;"></div>
                     </div>
 
-                    <!-- Row 5: Cores + Tamanhos -->
-                    <div class="form-grid" style="margin-bottom: 16px;">
-                        <div>
-                            <label
-                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
-                                Cores Disponíveis
-                            </label>
-                            <input type="text" id="prod-colors" placeholder="Verde, Rosa, Azul"
-                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ Botões de seleção de cor na página do
-                                produto</span>
-                        </div>
-                        <div>
-                            <label
-                                style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
-                                Tamanhos
-                            </label>
-                            <input type="text" id="prod-sizes" placeholder="P, M, G (ou vazio se tamanho único)"
-                                style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ Botões de tamanho na página do produto
-                                (vazio = não aparece)</span>
-                        </div>
+                    <!-- ═══ MODELOS/TAMANHOS + PREÇO POR MODELO ═══ -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
+                            📐 Modelos / Tamanhos
+                        </label>
+                        <input type="text" id="prod-sizes" placeholder="1 Tigela (2.4/5GHz), 2 Tigelas (2.4/5GHz)"
+                            style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;"
+                            oninput="updateSizePriceFields()">
+                        <span style="font-size:0.72rem;color:#94a3b8;">→ Vazio = modelo único. Se tiver mais de 1,
+                            preencha os preços abaixo</span>
+                        <div id="size-prices-container" style="margin-top:10px;"></div>
                     </div>
 
-                    <!-- Row 6: Rating + Review Count -->
+                    <!-- Rating + Review Count -->
                     <div class="form-grid" style="margin-bottom: 16px;">
                         <div>
                             <label
@@ -630,7 +636,6 @@
                             </label>
                             <input type="number" id="prod-rating" placeholder="4.9" min="0" max="5" step="0.1"
                                 style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ Estrelas na página do produto</span>
                         </div>
                         <div>
                             <label
@@ -639,20 +644,17 @@
                             </label>
                             <input type="number" id="prod-review-count" placeholder="347"
                                 style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;">
-                            <span style="font-size:0.72rem;color:#94a3b8;">→ "X avaliações" ao lado das estrelas</span>
                         </div>
                     </div>
 
-                    <!-- Row 7: Descrição -->
+                    <!-- Descrição -->
                     <div style="margin-bottom: 16px;">
                         <label style="font-weight:600;font-size:0.85rem;color:#334155;display:block;margin-bottom:4px;">
                             Descrição do Produto
                         </label>
                         <textarea id="prod-desc" rows="4"
                             style="width:100%;padding:12px;border:1px solid #d4d4d8;border-radius:8px;font-family:inherit;font-size:0.95rem;resize:vertical;"
-                            placeholder="Descreva o produto com foco em benefícios para o pet e o dono. Ex: Material, capacidade, diferenciais, uso recomendado..."></textarea>
-                        <span style="font-size:0.72rem;color:#94a3b8;">→ Texto na página do produto, abaixo do
-                            nome</span>
+                            placeholder="Descreva o produto com foco em benefícios..."></textarea>
                     </div>
 
                     <input type="hidden" id="prod-edit-id" value="">
@@ -680,6 +682,23 @@
                     <div
                         style="text-align:center; padding: 40px; color:#94a3b8; background: white; border-radius: 12px; border: 1px dashed #cbd5e1;">
                         Carregando...</div>
+                </div>
+            </div>
+
+            <!-- TAB: MÍDIA -->
+            <div class="tab-content" id="tab-midia">
+                <h3 style="margin-bottom: 16px; color: #1e293b; font-size: 1.2rem;">
+                    <i class="fas fa-cloud" style="color:#3b82f6;"></i> Imagens na Nuvem (Supabase)
+                </h3>
+                <button onclick="loadSupabaseMedia()"
+                    style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-bottom:16px;">
+                    <i class="fas fa-sync-alt"></i> Atualizar
+                </button>
+                <div id="midia-container"
+                    style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;">
+                    <div
+                        style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;grid-column:1/-1;">
+                        Clique "Atualizar" para carregar as imagens</div>
                 </div>
             </div>
         </div>
@@ -772,6 +791,228 @@
             if (!cents) return '';
             return (cents / 100).toFixed(2).replace('.', ',');
         }
+
+        // ========== GALERIA VISUAL ==========
+        let galleryImages = [];
+
+        function renderGalleryPreview() {
+            const container = document.getElementById('gallery-preview');
+            const coverUrl = document.getElementById('prod-image').value.trim();
+            if (!galleryImages.length) {
+                container.innerHTML = '<span style="color:#94a3b8;font-size:0.82rem;padding:16px;">Nenhuma imagem na galeria. Adicione abaixo.</span>';
+                return;
+            }
+            container.innerHTML = galleryImages.map((url, i) => {
+                const isCover = url === coverUrl;
+                return `<div style="position:relative;width:90px;height:90px;border-radius:8px;overflow:hidden;border:2px solid ${isCover ? '#059669' : '#e2e8f0'};flex-shrink:0;background:#f8fafc;">
+                    <img src="${url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22/>'">
+                    ${isCover ? '<div style="position:absolute;top:0;left:0;right:0;background:#059669;color:white;font-size:0.6rem;text-align:center;padding:2px;font-weight:700;">CAPA</div>' : ''}
+                    <div style="position:absolute;bottom:0;left:0;right:0;display:flex;gap:1px;">
+                        ${!isCover ? `<button onclick="setGalleryAsCover(${i})" style="flex:1;background:rgba(5,150,105,0.9);color:white;border:none;padding:3px;font-size:0.6rem;cursor:pointer;" title="Definir como capa">⭐</button>` : ''}
+                        <button onclick="moveGalleryImage(${i},-1)" style="flex:1;background:rgba(0,0,0,0.6);color:white;border:none;padding:3px;font-size:0.6rem;cursor:pointer;" ${i === 0 ? 'disabled' : ''}>◀</button>
+                        <button onclick="moveGalleryImage(${i},1)" style="flex:1;background:rgba(0,0,0,0.6);color:white;border:none;padding:3px;font-size:0.6rem;cursor:pointer;" ${i === galleryImages.length - 1 ? 'disabled' : ''}>▶</button>
+                        <button onclick="removeGalleryImage(${i})" style="flex:1;background:rgba(220,38,38,0.9);color:white;border:none;padding:3px;font-size:0.6rem;cursor:pointer;">✕</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('prod-gallery').value = galleryImages.join('\n');
+        }
+
+        function addGalleryImage() {
+            const input = document.getElementById('gallery-new-url');
+            const url = input.value.trim();
+            if (!url) return;
+            galleryImages.push(url);
+            input.value = '';
+            renderGalleryPreview();
+        }
+
+        function removeGalleryImage(index) {
+            galleryImages.splice(index, 1);
+            renderGalleryPreview();
+        }
+
+        function setGalleryAsCover(index) {
+            const url = galleryImages[index];
+            document.getElementById('prod-image').value = url;
+            updateImagePreview();
+            renderGalleryPreview();
+        }
+
+        function moveGalleryImage(index, direction) {
+            const newIdx = index + direction;
+            if (newIdx < 0 || newIdx >= galleryImages.length) return;
+            [galleryImages[index], galleryImages[newIdx]] = [galleryImages[newIdx], galleryImages[index]];
+            renderGalleryPreview();
+        }
+
+        // ========== COLOR IMAGE FIELDS ==========
+        let colorImageMap = {};
+
+        function updateColorImageFields() {
+            const colors = document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean);
+            const container = document.getElementById('color-images-container');
+            if (!colors.length) { container.innerHTML = ''; return; }
+
+            container.innerHTML = colors.map(color => {
+                const existing = colorImageMap[color] || '';
+                return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;">
+                    <div style="width:40px;height:40px;border-radius:6px;overflow:hidden;flex-shrink:0;border:1px solid #d4d4d8;background:white;display:flex;align-items:center;justify-content:center;" id="color-prev-${color.replace(/\s/g, '')}">
+                        ${existing ? `<img src="${existing}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-image" style="color:#cbd5e1;font-size:0.7rem;"></i>'}
+                    </div>
+                    <span style="font-weight:600;font-size:0.85rem;min-width:60px;color:#334155;">${color}</span>
+                    <input type="text" value="${existing}" placeholder="URL da imagem para ${color}" 
+                        style="flex:1;padding:8px;border:1px solid #d4d4d8;border-radius:6px;font-size:0.82rem;font-family:inherit;"
+                        onchange="updateColorImage('${color}', this.value)"
+                        oninput="updateColorImagePreview('${color.replace(/\s/g, '')}', this.value)">
+                </div>`;
+            }).join('');
+        }
+
+        function updateColorImage(color, url) {
+            if (url.trim()) colorImageMap[color] = url.trim();
+            else delete colorImageMap[color];
+        }
+
+        function updateColorImagePreview(colorId, url) {
+            const el = document.getElementById('color-prev-' + colorId);
+            if (el && url.trim()) el.innerHTML = `<img src="${url.trim()}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-exclamation-triangle\\' style=\\'color:#ef4444;font-size:0.7rem;\\'></i>'">`;
+        }
+
+        // ========== SIZE PRICE FIELDS ==========
+        let sizePriceMap = {};
+
+        function updateSizePriceFields() {
+            const sizes = document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean);
+            const container = document.getElementById('size-prices-container');
+            if (sizes.length <= 1) { container.innerHTML = '<span style="font-size:0.75rem;color:#94a3b8;">Modelo único — usa o preço base acima</span>'; return; }
+
+            container.innerHTML = '<div style="font-size:0.75rem;color:#b45309;font-weight:600;margin-bottom:8px;"><i class="fas fa-info-circle"></i> Defina o preço de cada modelo:</div>' +
+                sizes.map(size => {
+                    const existing = sizePriceMap[size] || {};
+                    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:10px;background:#fffbeb;border-radius:8px;border:1px solid #fde68a;">
+                        <span style="font-weight:600;font-size:0.82rem;min-width:120px;color:#78350f;">${size}</span>
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem;color:#92400e;">Preço (R$)</label>
+                            <input type="text" value="${existing.price ? centsToDisplay(existing.price) : ''}" placeholder="2.869,90"
+                                style="width:100%;padding:6px 8px;border:1px solid #fde68a;border-radius:6px;font-size:0.82rem;font-family:inherit;"
+                                oninput="formatPriceInput(this); updateSizePrice('${size.replace(/'/g, "\\'")}', 'price', this.value)">
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-size:0.7rem;color:#92400e;">De (R$)</label>
+                            <input type="text" value="${existing.oldPrice ? centsToDisplay(existing.oldPrice) : ''}" placeholder="3.999,90"
+                                style="width:100%;padding:6px 8px;border:1px solid #fde68a;border-radius:6px;font-size:0.82rem;font-family:inherit;"
+                                oninput="formatPriceInput(this); updateSizePrice('${size.replace(/'/g, "\\'")}', 'oldPrice', this.value)">
+                        </div>
+                    </div>`;
+                }).join('');
+        }
+
+        function updateSizePrice(size, field, value) {
+            if (!sizePriceMap[size]) sizePriceMap[size] = {};
+            sizePriceMap[size][field] = parsePriceToCents(value);
+        }
+
+        // ========== SUPABASE MEDIA BROWSER ==========
+        const SUPABASE_URL = 'https://curpipklnvljucpivppj.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN1cnBpcGtsbnZsanVjcGl2cHBqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzE2NjAyOSwiZXhwIjoyMDg4NzQyMDI5fQ.LlnfPCDHgFqa3cOHg00wx-GRzc4dK5WlBClr7XCjFG4';
+
+        window.loadSupabaseMedia = async function () {
+            const container = document.getElementById('midia-container');
+            container.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b;grid-column:1/-1;"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>';
+
+            try {
+                // List folders
+                const foldersRes = await fetch(`${SUPABASE_URL}/storage/v1/object/list/lambzbuckets/`, {
+                    headers: { 'Authorization': `Bearer ${SUPABASE_KEY}` },
+                    method: 'POST',
+                    body: JSON.stringify({ prefix: '', limit: 100 })
+                });
+                const items = await foldersRes.json();
+
+                // Collect all image URLs used in products
+                const usedImages = {};
+                if (window.allProductsForMedia) {
+                    window.allProductsForMedia.forEach(p => {
+                        if (p.image) usedImages[p.image] = { product: p.name, type: 'Capa' };
+                        (p.images || []).forEach((img, i) => {
+                            if (!usedImages[img]) usedImages[img] = { product: p.name, type: `Galeria #${i + 1}` };
+                        });
+                        if (p.colorImages) {
+                            Object.entries(p.colorImages).forEach(([color, img]) => {
+                                usedImages[img] = { product: p.name, type: `Cor: ${color}` };
+                            });
+                        }
+                    });
+                }
+
+                // For each folder, get files
+                let allFiles = [];
+                for (const item of items) {
+                    if (item.id) continue; // it's a file at root
+                    const folder = item.name;
+                    const filesRes = await fetch(`${SUPABASE_URL}/storage/v1/object/list/lambzbuckets/${folder}`, {
+                        headers: { 'Authorization': `Bearer ${SUPABASE_KEY}` },
+                        method: 'POST',
+                        body: JSON.stringify({ prefix: '', limit: 200 })
+                    });
+                    const files = await filesRes.json();
+                    files.forEach(f => {
+                        if (f.name && f.metadata) {
+                            allFiles.push({
+                                folder,
+                                name: f.name,
+                                url: `${SUPABASE_URL}/storage/v1/object/public/lambzbuckets/${folder}/${f.name}`,
+                                size: f.metadata.size || 0
+                            });
+                        }
+                    });
+                }
+
+                // Also check root files
+                for (const item of items) {
+                    if (item.id && item.name && item.metadata) {
+                        allFiles.push({
+                            folder: '/',
+                            name: item.name,
+                            url: `${SUPABASE_URL}/storage/v1/object/public/lambzbuckets/${item.name}`,
+                            size: item.metadata.size || 0
+                        });
+                    }
+                }
+
+                if (!allFiles.length) {
+                    container.innerHTML = '<div style="text-align:center;padding:40px;color:#94a3b8;background:white;border-radius:12px;border:1px dashed #cbd5e1;grid-column:1/-1;">Nenhuma imagem encontrada no Supabase.</div>';
+                    return;
+                }
+
+                container.innerHTML = allFiles.map(f => {
+                    const usage = usedImages[f.url];
+                    const sizeKb = Math.round(f.size / 1024);
+                    return `<div style="background:white;border-radius:10px;border:1px solid ${usage ? '#bbf7d0' : '#fecaca'};overflow:hidden;position:relative;">
+                        <img src="${f.url}" style="width:100%;height:130px;object-fit:cover;display:block;" loading="lazy">
+                        <div style="padding:8px;">
+                            <div style="font-size:0.72rem;color:#64748b;word-break:break-all;line-height:1.2;">${f.folder}/${f.name}</div>
+                            <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px;">${sizeKb}KB</div>
+                            ${usage
+                            ? `<div style="margin-top:4px;font-size:0.68rem;padding:3px 6px;background:#dcfce7;color:#166534;border-radius:4px;font-weight:600;">
+                                    <i class="fas fa-link"></i> ${usage.product} — ${usage.type}</div>`
+                            : `<div style="margin-top:4px;font-size:0.68rem;padding:3px 6px;background:#fee2e2;color:#991b1b;border-radius:4px;font-weight:600;">
+                                    <i class="fas fa-unlink"></i> Não vinculada</div>`
+                        }
+                            <button onclick="navigator.clipboard.writeText('${f.url}');this.textContent='Copiada!';setTimeout(()=>this.textContent='Copiar URL',1500)"
+                                style="margin-top:6px;width:100%;padding:5px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:0.72rem;cursor:pointer;color:#475569;font-weight:600;">
+                                Copiar URL
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+            } catch (e) {
+                console.error('Erro Supabase:', e);
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#ef4444;background:white;border-radius:12px;grid-column:1/-1;">Erro ao carregar imagens: ' + e.message + '</div>';
+            }
+        };
     </script>
 
     <!-- FIREBASE MODULAR C/ FIRESTORE -->
@@ -1004,6 +1245,7 @@
         }
 
         // ========== PRODUTOS ==========
+        // ========== PRODUTOS ==========
         window.editProduct = function (id) {
             const p = allProducts.find(x => x.id === id);
             if (!p) return;
@@ -1012,9 +1254,19 @@
             document.getElementById('prod-price').value = centsToDisplay(p.price);
             document.getElementById('prod-old-price').value = centsToDisplay(p.oldPrice);
             document.getElementById('prod-image').value = p.image || '';
-            document.getElementById('prod-gallery').value = (p.images || []).join('\n');
+
+            // Carrega estruturas visuais
+            galleryImages = p.images ? [...p.images] : (p.image ? [p.image] : []);
+            renderGalleryPreview();
+
             document.getElementById('prod-colors').value = (p.colors || []).join(', ');
+            colorImageMap = p.colorImages ? { ...p.colorImages } : {};
+            updateColorImageFields();
+
             document.getElementById('prod-sizes').value = (p.sizes || []).join(', ');
+            sizePriceMap = p.sizePrices ? { ...p.sizePrices } : {};
+            updateSizePriceFields();
+
             document.getElementById('prod-rating').value = p.rating || '';
             document.getElementById('prod-review-count').value = p.reviewCount || '';
             document.getElementById('prod-desc').value = p.description || '';
@@ -1029,7 +1281,16 @@
 
         window.cancelEdit = function () {
             document.getElementById('prod-edit-id').value = '';
-            ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-gallery', 'prod-colors', 'prod-sizes', 'prod-rating', 'prod-review-count', 'prod-desc'].forEach(i => document.getElementById(i).value = '');
+            ['prod-name', 'prod-price', 'prod-old-price', 'prod-image', 'prod-gallery', 'prod-colors', 'prod-sizes', 'prod-rating', 'prod-review-count', 'prod-desc', 'gallery-new-url'].forEach(i => document.getElementById(i).value = '');
+
+            galleryImages = [];
+            colorImageMap = {};
+            sizePriceMap = {};
+
+            renderGalleryPreview();
+            updateColorImageFields();
+            updateSizePriceFields();
+
             document.getElementById('btnSaveProduct').innerHTML = '<i class="fas fa-plus"></i> Salvar Produto';
             document.getElementById('btnCancelEdit').style.display = 'none';
             document.getElementById('slug-text').textContent = '...';
@@ -1049,18 +1310,27 @@
             const price = parsePriceToCents(priceStr);
             const oldPrice = parsePriceToCents(document.getElementById('prod-old-price').value);
 
-            // Gallery: split by newlines, filter empty
-            const galleryRaw = document.getElementById('prod-gallery').value;
-            const images = galleryRaw ? galleryRaw.split('\n').map(u => u.trim()).filter(Boolean) : [image];
+            // Cores e Modelos selecionados
+            const colors = document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean);
+            const sizes = document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean);
+
+            // Limpar chaves órfãs de colorImageMap e sizePriceMap
+            const cleanColorImageMap = {};
+            colors.forEach(c => { if (colorImageMap[c]) cleanColorImageMap[c] = colorImageMap[c]; });
+
+            const cleanSizePriceMap = {};
+            sizes.forEach(s => { if (sizePriceMap[s]) cleanSizePriceMap[s] = sizePriceMap[s]; });
 
             const prodData = {
                 name,
                 price,
                 oldPrice: oldPrice || 0,
                 image,
-                images,
-                colors: document.getElementById('prod-colors').value.split(',').map(c => c.trim()).filter(Boolean),
-                sizes: document.getElementById('prod-sizes').value.split(',').map(s => s.trim()).filter(Boolean),
+                images: galleryImages.length ? galleryImages : [image],
+                colors: colors,
+                colorImages: cleanColorImageMap,
+                sizes: sizes,
+                sizePrices: cleanSizePriceMap,
                 rating: parseFloat(document.getElementById('prod-rating').value) || 4.9,
                 reviewCount: parseInt(document.getElementById('prod-review-count').value) || 0,
                 description: document.getElementById('prod-desc').value || '',
