@@ -75,13 +75,17 @@ window.LAMBZ_PRODUCTS = [
         name: "Alimentador Automático Inteligente com Câmera",
         price: 286990,
         oldPrice: 399990,
-        image: "https://placehold.co/800x800/1a1a2e/ffffff?text=Alimentador+Smart",
+        image: "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-hero.jpg",
         images: [
-            "https://placehold.co/800x800/1a1a2e/ffffff?text=Alimentador+Smart"
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-hero.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-camera.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-app.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-1tigela-preto.jpg",
+            "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-2tigelas-preto.jpg"
         ],
         colorImages: {
-            "Preto": "https://placehold.co/800x800/1a1a2e/ffffff?text=Preto",
-            "Branco": "https://placehold.co/800x800/f5f5f5/333333?text=Branco"
+            "Preto": "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-hero.jpg",
+            "Branco": "https://curpipklnvljucpivppj.supabase.co/storage/v1/object/public/lambzbuckets/alimentador/alimentador-branco.jpg"
         },
         description: "Alimentador inteligente para cães e gatos com câmera HD 1080P e visão noturna. Veja e ouça seu pet em qualquer lugar! Programe de 1 a 6 refeições diárias com porções personalizáveis. Conexão WiFi 2.4/5 GHz pelo app \"Pet Zero\" — controle pelo celular, mesmo à distância. Capacidade de 4L, tigela de 6,7 polegadas. Alimentação dupla (bateria + cabo) para funcionar sem parar.",
         rating: 4.8,
